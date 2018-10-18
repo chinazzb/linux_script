@@ -7,7 +7,7 @@
 #Date: 2018-10-18
 #version: 0.0.2
 
-##centos 7.5
+#centos 7.5 tomcat.8.5.34 apr1.
 
 import os
 import time
