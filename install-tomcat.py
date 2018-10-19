@@ -7,13 +7,14 @@
 #Date: 2018-10-18
 #version: 0.0.2
 
-#centos 7.5 tomcat.8.5.34 apr1.
+##centos 7.5
 
 import os
 import time
 
 def install_gcc():
-    if 0 != os.system("yum install -y gcc gcc-c++ libtool* autoconf automake expat-devel perl perl-devel"):
+    check = os.system("yum install -y gcc gcc-c++ libtool* autoconf automake expat-devel perl perl-devel")
+    if 0 != check:
         print("请检查yum源是否正常使用")
         os._exit(3)
 
@@ -54,7 +55,7 @@ def install_tomcat():
         print("开始编译apr-iconv.......................................................")
         time.sleep(3)
         checkAprIconv = os.system("cd /tmp/apr-iconv* && ./configure --prefix=/usr/local/apr-iconv/ "
-                             "--with-apr=/usr/local/apr && make && make install")
+                                  "--with-apr=/usr/local/apr && make && make install")
         if 0 != checkAprIconv:
             print("编译apr-iconv失败请检查相对应文件")
             os._exit(12)
