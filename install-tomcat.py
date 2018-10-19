@@ -13,8 +13,7 @@ import os
 import time
 
 def install_gcc():
-    check = os.system("yum install -y gcc gcc-c++ libtool* autoconf automake expat-devel perl perl-devel")
-    if 0 != check:
+    if 0 != os.system("yum install -y gcc gcc-c++ libtool* autoconf automake expat-devel perl perl-devel"):
         print("请检查yum源是否正常使用")
         os._exit(3)
 
