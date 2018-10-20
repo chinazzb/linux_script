@@ -71,7 +71,7 @@ def install_tomcat():
         print("apr-util编译安装完成.......................................................")
         print("开始编译TomcatNative.......................................................")
         time.sleep(3)
-        os.system("groupadd tomcat && useradd -g tomcat -s /bin/false tomcat")
+        os.system("groupadd web && useradd -g web -s /bin/false tomcat")
         jdkVersion = "jdk1.8.0_162"
         checkTomcatNative = os.system("cd /tmp/apache-tomcat-*/bin/ && tar zxvf tomcat-native.tar.gz && "
                                       "cd tomcat-native-*/native && ./configure --with-apr=/usr/local/apr/bin/apr-1-config "
