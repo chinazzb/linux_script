@@ -17,7 +17,7 @@ def download_software():
     checkNetwork = os.system("ping www.taobao.com -c 2")
     os.system("rm -rf /tmp/nginx && mkdir -p /tmp/nginx")
     if 0 == checkNetwork:
-        os.system("cd /tmp/nginx")
+        os.system("wget -P /tmp/nginx http://nginx.org/download/nginx-1.14.0.tar.gz")
         os.system("for i in /tmp/nginx/*.tar.gz;do tar zxvf $i -C /tmp/nginx;done")
     if 0 !=checkNetwork:
         nginxTarDir = raw_input("input tomcat tar path:")
@@ -26,7 +26,7 @@ def download_software():
         exit()
     os.system("for i in " +nginxTarDir+"/nginx*.tar.gz;do tar zxvf $i -C /tmp/nginx;done")
 def install_gcc():
-    if 0 != os.system("yum install -y pcre zlib pcre-devel zlib-devel gcc gcc-c++"):
+    if 0 != os.system("yum install -y pcre zlib pcre-devel zlib-devel gcc gcc-c++ wget"):
         print("check yum repo.d .................................................")
         os._exit(2)
 def enable_nginx():
