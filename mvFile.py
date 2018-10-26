@@ -15,16 +15,15 @@ def move_file(oldPath,newPath):
     for root, dirs, files in os.walk(oldPath, topdown=False):
         for name in files:
             pathName = (os.path.join(root,name))
-            outPutFile.write("moving " + pathName + "\n")
-            print(name)
-            # try:
-            #     shutil.move(pathName,newPath)
-            # except shutil.Error as shutilError:
-            #     errorMessage = str(shutilError)
-            # except BaseException as BaseError:
-            #     errorMessage = str(BaseError)
-            # finally:
-            #     outPutFile.write(errorMessage + "\n")
+            outPutFile.write(pathName + "\n")
+            try:
+                shutil.move(pathName,newPath)
+            except shutil.Error as shutilError:
+                errorMessage = str(shutilError)
+            except BaseException as BaseError:
+                errorMessage = str(BaseError)
+            finally:
+                outPutFile.write(errorMessage + "\n")
     outPutFile.close()
 #main ideas
 if __name__ == '__main__':

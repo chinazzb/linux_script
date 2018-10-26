@@ -10,7 +10,7 @@ import cx_Oracle
 """
 
 #数据库用户
-dbName = 'poka'
+dbName = 'test'
 #数据库密码
 dbPasswd = '123456'
 #数据库ip、端口号、数据库名
