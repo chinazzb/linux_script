@@ -8,8 +8,9 @@
 #version: 0.0.2
 
 #centos 7.5
-#First of all download JDK!!!!!!!!!!!
+#在线安装需要将JDK解压到/usr/java 目录
 #Offline installation dependency  tomcat apr apr-iconv apr-util
+#use JDK1.7.0_80,CMS GC
 
 import os
 import time
@@ -20,11 +21,32 @@ def install_gcc():
         print("请检查yum源是否正常使用")
         os._exit(3)
 
+
+def download_tomcat():
+    checkNetwork = os.system("ping mirror.bit.edu.cn -c 2")
+    os.system("rm -rf /tmp/tomcat && mkdir -p /tmp/tomcat/download")
+    if 0 == checkNetwork:
+        os.system("wget -P /tmp/tomcat/download http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.tar.gz")
+        os.system("wget -P /tmp/tomcat/download http://mirror.bit.edu.cn/apache/apr/apr-1.6.5.tar.gz")
+        os.system("wget -P /tmp/tomcat/download http://mirror.bit.edu.cn/apache/apr/apr-util-1.6.1.tar.gz")
+        os.system("wget -P /tmp/tomcat/download http://mirror.bit.edu.cn/apache/apr/apr-iconv-1.2.2.tar.gz")
+        os.system("for i in /tmp/tomcat/download/*.tar.gz;do tar zxvf $i -C /tmp/tomcat;done")
+    if 0 !=checkNetwork:
+        tomcatTarGz = raw_input("input tomcat tar.gz file path:")
+        if not os.path.exists(tomcatTarGz):
+            print("check path,path not exists")
+            exit()
+        tomcat = "/tmp/tomcat"
+        os.system("tar zxvf " + tomcatTarGz + " -C " + tomcat)
+        tomcatApr = tomcat+"/tomcat-apr"
+        os.system("for i in " +tomcatApr+ "/*.tar.gz;do tar zxvf $i -C /tmp/tomcat/;done")
+        os.system("mkdir /usr/java/")
+        os.system("mv /tmp/tomcat/jdk* /usr/java/")
+        return tomcatApr
+
+
 def jdk_configure():
     #jdk
-    jdkTarDir = raw_input("input jdk tar path:")
-    os.system("mkdir /usr/java/")
-    os.system("tar zxvf " + jdkTarDir + "/jdk* -C /usr/java/")
     jdkHome = "/usr/java/"+"".join(os.listdir("/usr/java/"))
     profile = open("/etc/profile","a")
     profile.write("JAVA_HOME=" + jdkHome + "\n")
@@ -36,22 +58,7 @@ def jdk_configure():
     profile.close()
     return jdkHome
 
-def download_tomcat():
-    checkNetwork = os.system("ping www.taobao.com -c 2")
-    os.system("rm -rf /tmp/tomcat && mkdir -p /tmp/tomcat/download")
-    if 0 == checkNetwork:
-        os.system("cd /tmp/tomcat")
-        os.system("wget -P /tmp/tomcat/download http://mirrors.shu.edu.cn/apache/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.tar.gz")
-        os.system("wget -P /tmp/tomcat/download http://mirrors.shu.edu.cn/apache/apr/apr-1.6.5.tar.gz")
-        os.system("wget -P /tmp/tomcat/download http://mirrors.shu.edu.cn/apache/apr/apr-util-1.6.1.tar.gz")
-        os.system("wget -P /tmp/tomcat/download http://mirrors.shu.edu.cn/apache/apr/apr-iconv-1.2.2.tar.gz")
-        os.system("for i in /tmp/tomcat/download/*.tar.gz;do tar zxvf $i -C /tmp/tomcat;done")
-    if 0 !=checkNetwork:
-        tomcatTarDir = raw_input("input tomcat tar path:")
-        if not os.path.exists(tomcatTarDir):
-            print("check path,path not exists")
-            exit()
-        os.system("for i in " +tomcatTarDir+"/*.tar.gz;do tar zxvf $i -C /tmp/tomcat;done")
+
 def make_tomcat(jdkHome):
     #tomcat
     defaultFileRead = open("/tmp/tomcat/apr-1.6.5/configure").readlines()
@@ -92,20 +99,23 @@ def make_tomcat(jdkHome):
                                   "--with-java-home=" + jdkHome + " && make && make install")
     if 0 != checkTomcatNative:
         print("TomcatNative编译失败，请检查对应路径")
-    print("TomcatNative编译安装完成.......................................................")
-    print("开始安装tomcat.................................................................")
+    print("TomcatNative编译安装完成............................................................")
+    print("installing tomcat...................................................................")
     time.sleep(3)
-    os.system("mv /tmp/tomcat/apache-tomcat* /usr/local/ && ln -s /usr/local/apache-tomcat* /usr/local/tomcat && "
-              "chown -hR tomcat:tomcat /usr/local/{apache-tomcat*,tomcat}")
+    os.system("mv /tmp/tomcat/apache-tomcat* /usr/local/ && ln -s /usr/local/apache-tomcat* /usr/local/tomcat")
     os.system("cp -R /usr/local/apr/lib/* /usr/lib64 && cp -R /usr/local/apr/lib/* /usr/lib")
-    print("安装tomcat完成.................................................................")
+    print("install tomcat done.................................................................")
 
-def install_tomcat():
-    install_gcc()
-    jdkHome = jdk_configure()
-    download_tomcat()
-    make_tomcat(jdkHome)
-    enable_tomcat(jdkHome)
+
+def tomcat_optimization(tomcatApr):
+    time.sleep(3)
+    print("starting tomcat optimization......................................................")
+    os.system("mv -f " + tomcatApr +"/server.xml /usr/local/tomcat/conf/" )
+    os.system("mv -f " + tomcatApr +"/tomcat-user.xml /usr/local/tomcat/conf/" )
+    tomcatProject = "/usr/local/tomcat/webapps/project/"
+    os.system("mkdir " + tomcatProject + " && mv " + tomcatApr + "/manager " + tomcatProject)
+    os.system("chown -hR tomcat:web /usr/local/{apache-tomcat*,tomcat}")
+    print("tomcat optimization done...........................................................")
 
 
 def enable_tomcat(jdkHome):
@@ -116,7 +126,7 @@ def enable_tomcat(jdkHome):
     enableTomcat.write("[Service]\n")
     enableTomcat.write("Type=forking\n")
     enableTomcat.write("User=tomcat\n")
-    enableTomcat.write("Group=tomcat\n\n")
+    enableTomcat.write("Group=web\n\n")
     enableTomcat.write("Environment=JAVA_HOME=" + jdkHome + "\n")
     enableTomcat.write("Environment=CATALINA_PID=/usr/local/tomcat/temp/tomcat.pid\n")
     enableTomcat.write("Environment=CATALINA_HOME=/usr/local/tomcat\n")
@@ -138,6 +148,24 @@ def enable_tomcat(jdkHome):
     os.system("systemctl daemon-reload && systemctl enable tomcat && init 6")
 
 
+def system_firewalld():
+    os.system("systemctl start firewalld")
+    os.system("firewall-cmd --permanent --add-port=8080/tcp --zone=public")
+    os.system("firewall-cmd --permanent --add-service=ftp --zone=public")
+    os.system("firewall-cmd --permanent --add-service=http --zone=public")
+    os.system("firewall-cmd --reload")
+
+
+def install_tomcat():
+    install_gcc()
+    tomcatApr = download_tomcat()
+    jdkHome = jdk_configure()
+    make_tomcat(jdkHome)
+    #tomcat_optimization(tomcatApr)
+    enable_tomcat(jdkHome)
+    system_firewalld()
+
+	
 if __name__ == '__main__':
     print("此脚本运行环境为Centos7.5,若其他版本出现错误请自行更改或联系mail\n请使用root用户运行")
     time.sleep(5)
