@@ -15,16 +15,17 @@ import time
 
 def download_software():
     checkNetwork = os.system("ping www.taobao.com -c 2")
-    os.system("rm -rf /tmp/nginx && mkdir -p /tmp/nginx")
+    os.system("rm -rf /tmp/nginx && mkdir -p /tmp/nginx/download")
+    nginxTarDir = '/tmp/nginx/download'
     if 0 == checkNetwork:
-        os.system("wget -P /tmp/nginx http://nginx.org/download/nginx-1.14.0.tar.gz")
-        os.system("for i in /tmp/nginx/*.tar.gz;do tar zxvf $i -C /tmp/nginx;done")
-    if 0 !=checkNetwork:
+        os.system("wget -P " + nginxTarDir + " http://nginx.org/download/nginx-1.14.1.tar.gz")
+        os.system("for i in " + nginxTarDir + "/nginx*.tar.gz;do tar zxvf $i -C /tmp/nginx;done")
+    if 0 != checkNetwork:
         nginxTarDir = raw_input("input tomcat tar path:")
-    if not os.path.exists(nginxTarDir):
-        print("check path,path not exists")
-        exit()
-    os.system("for i in " +nginxTarDir+"/nginx*.tar.gz;do tar zxvf $i -C /tmp/nginx;done")
+        if not os.path.exists(nginxTarDir):
+            print("check path,path not exists")
+            exit()
+    os.system("for i in " + nginxTarDir + "/nginx*.tar.gz;do tar zxvf $i -C /tmp/nginx;done")
 def install_gcc():
     if 0 != os.system("yum install -y pcre zlib pcre-devel zlib-devel gcc gcc-c++ wget"):
         print("check yum repo.d .................................................")
