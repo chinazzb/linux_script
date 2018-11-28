@@ -84,7 +84,7 @@ def make_tomcat(jdkHome):
     print("apr-iconv编译安装完成...................................................")
     print("开始编译apr-util.......................................................")
     time.sleep(3)
-    checkAprUtil = os.system("cd /tmp/tomcat/apr-iconv* && ./configure --prefix=/usr/local/apr-util/ "
+    checkAprUtil = os.system("cd /tmp/tomcat/apr-util* && ./configure --prefix=/usr/local/apr-util "
                              "--with-apr=/usr/local/apr --with-apr-iconv=/usr/local/apr-iconv/bin/apriconv "
                              "&& make && make install")
     if 0 != checkAprUtil:
@@ -93,12 +93,13 @@ def make_tomcat(jdkHome):
     print("apr-util编译安装完成.......................................................")
     print("开始编译TomcatNative.......................................................")
     time.sleep(3)
-    os.system("groupadd web && useradd -g web -s /bin/false tomcat")
+    os.system("groupadd web && useradd -g web -s /bin/false -M tomcat")
     checkTomcatNative = os.system("cd /tmp/tomcat/apache-tomcat-*/bin/ && tar zxvf tomcat-native.tar.gz && "
                                   "cd tomcat-native-*/native && ./configure --with-apr=/usr/local/apr/bin/apr-1-config "
                                   "--with-java-home=" + jdkHome + " && make && make install")
     if 0 != checkTomcatNative:
         print("TomcatNative编译失败，请检查对应路径")
+        os._exit(14)
     print("TomcatNative编译安装完成............................................................")
     print("installing tomcat...................................................................")
     time.sleep(3)

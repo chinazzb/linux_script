@@ -38,7 +38,7 @@ def enable_nginx():
     enableNginx.write("[Service]\n")
     enableNginx.write("Type=forking\n\n")
     enableNginx.write("PIDFile=/usr/local/nginx/logs/nginx.pid\n")
-    enableNginx.write("ExecStartPre=/usr/bin/rm -f //usr/local/nginx/logs/nginx.pid\n")
+    enableNginx.write("ExecStartPre=/usr/bin/rm -f /usr/local/nginx/logs/nginx.pid\n")
     enableNginx.write("ExecStartPre=/usr/local/nginx/sbin/nginx -t\n")
     enableNginx.write("ExecStart=/usr/local/nginx/sbin/nginx\n")
     enableNginx.write("ExecReload=/bin/kill -s HUP $MAINPID\n")
@@ -49,11 +49,11 @@ def enable_nginx():
     enableNginx.write("[Install]\n")
     enableNginx.write("WantedBy=multi-user.target\n")
     enableNginx.close()
-    if  0 == os.system("systemctl daemon-reload && systemctl enable nginx"):
+    if 0 == os.system("systemctl daemon-reload && systemctl enable nginx"):
         print("完成nginx自启动...........................................................")
-    print("测试nginx自启动，即将重启服务器.............................................")
-    time.sleep(6)
-    os.system("init 6")
+    print("测试nginx自启动，请自行重启.............................................")
+    #time.sleep(6)
+    #os.system("init 6")
 
 def make_nginx():
     print("starting configure nginx............................................")
