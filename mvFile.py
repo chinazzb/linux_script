@@ -15,7 +15,6 @@ def move_file(oldPath,newPath):
     for root, dirs, files in os.walk(oldPath, topdown=False):
         for name in files:
             pathName = (os.path.join(root,name))
-            outPutFile.write(pathName + "\n")
             try:
                 shutil.move(pathName,newPath)
             except shutil.Error as shutilError:
@@ -28,6 +27,8 @@ def move_file(oldPath,newPath):
 #main ideas
 if __name__ == '__main__':
     #fsn文件路径(只需要一个主目录即可)
-    oldPath = "F:\TestDir\evaluate-tables"
-    newPath = "E:\\fileDir"
-    move_file(oldPath,newPath)
+    oldPath = "F:\\Test"
+    newPath = "E:\\testDir"
+    if os.path.exists(oldPath) and os.path.exists(newPath):
+        move_file(oldPath,newPath)
+
