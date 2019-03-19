@@ -4,49 +4,44 @@
 #organization: China Poka
 #Author: Duan Yu
 #mail:chinazzbcn@gmail.com or cn-duanyu@foxmail.com
-#Date: 2018-10-25
-#version: 0.0.2
+#Date: 07-12-2018
+#version: 0.9
 
-#centos 7.5
-#在线安装需要将JDK解压到/usr/java 目录
-#Offline installation dependency  tomcat apr apr-iconv apr-util
-#use JDK1.7.0_80,CMS GC
+#SUSE11
 
 import os
 import time
 
 def install_gcc():
-    check = os.system("yum install -y gcc gcc-c++ libtool* autoconf automake expat-devel perl perl-devel wget")
+    check = os.system("zypper install -y gcc gcc-c++ bzip2 ")
     if 0 != check:
         print("请检查yum源是否正常使用")
         os._exit(3)
 
 
 def download_tomcat():
-    checkNetwork = os.system("ping mirror.bit.edu.cn -c 2")
-    os.system("rm -rf /tmp/tomcat && mkdir -p /tmp/tomcat/download")
-    if 0 == checkNetwork:
-        os.system("wget -P /tmp/tomcat/download http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.tar.gz")
-        os.system("wget -P /tmp/tomcat/download http://mirror.bit.edu.cn/apache/apr/apr-1.6.5.tar.gz")
-        os.system("wget -P /tmp/tomcat/download http://mirror.bit.edu.cn/apache/apr/apr-util-1.6.1.tar.gz")
-        os.system("wget -P /tmp/tomcat/download http://mirror.bit.edu.cn/apache/apr/apr-iconv-1.2.2.tar.gz")
-        os.system("for i in /tmp/tomcat/download/*.tar.gz;do tar zxvf $i -C /tmp/tomcat;done")
-    if 0 !=checkNetwork:
-        tomcatTarGz = raw_input("input tomcat tar.gz file path:")
-        if not os.path.exists(tomcatTarGz):
-            print("check path,path not exists")
-            exit()
-        tomcat = "/tmp/tomcat"
-        os.system("tar zxvf " + tomcatTarGz + " -C " + tomcat)
-        tomcatApr = tomcat+"/tomcat-apr"
-        os.system("for i in " +tomcatApr+ "/*.tar.gz;do tar zxvf $i -C /tmp/tomcat/;done")
-        os.system("mkdir /usr/java/")
-        os.system("mv /tmp/tomcat/jdk* /usr/java/")
-        return tomcatApr
+    tomcatTar = "/tmp/tomcat-apr.tar"
+    if not os.path.exists(tomcatTar):
+        print("check this path,the path dones not exist")
+        while True:
+            tomcatTar = raw_input("请输入tomcat-apr.tar此文件的绝对路径:")
+            if os.path.exists(tomcatTar):
+                break
+    os.system("rm -rf /tmp/tomcat")
+    os.system("mkdir /tmp/tomcat")
+    tomcat = "/tmp/tomcat"
+    os.system("tar xvf " + tomcatTar + " -C " + tomcat)
+    tomcatApr = tomcat+"/tomcat-apr"
+    os.system("for i in " + tomcatApr + "/*.tar.gz;do tar zxvf $i -C /tmp/tomcat/;done")
+    os.system("tar xvf " + tomcatApr + "/expat* -C /tmp/tomcat/")
+    return tomcatApr
 
 
 def jdk_configure():
     #jdk
+    os.system("rm -rf /usr/java/")
+    os.system("mkdir /usr/java/")
+    os.system("mv /tmp/tomcat/jdk* /usr/java/")
     jdkHome = "/usr/java/"+"".join(os.listdir("/usr/java/"))
     profile = open("/etc/profile","a")
     profile.write("JAVA_HOME=" + jdkHome + "\n")
@@ -59,13 +54,11 @@ def jdk_configure():
     return jdkHome
 
 
-def make_tomcat(jdkHome):
+def make_tomcat(jdkHome,tomcatApr):
+    print("开始编译tomcat.........................................................")
+    time.sleep(3)
     #tomcat
-    defaultFileRead = open("/tmp/tomcat/apr-1.6.5/configure").readlines()
-    updateFileWrite = open("/tmp/tomcat/apr-1.6.5/configure","r+")
-    for defaultFile in defaultFileRead:
-        updateFileWrite.write(defaultFile.replace("RM='$RM'","RM='$RM -f'"))
-    updateFileWrite.close()
+    replace("/tmp/tomcat/apr-1.6.5/configure","RM='$RM'","RM='$RM -f'")
     #make
     print("开始编译apr............................................................")
     time.sleep(3)
@@ -74,6 +67,8 @@ def make_tomcat(jdkHome):
         print("编译apr失败请检查相对应文件")
         os._exit(11)
     print("apr编译安装完成..........................................................")
+
+
     print("开始编译apr-iconv.......................................................")
     time.sleep(3)
     checkAprIconv = os.system("cd /tmp/tomcat/apr-iconv* && ./configure --prefix=/usr/local/apr-iconv/ "
@@ -82,15 +77,28 @@ def make_tomcat(jdkHome):
         print("编译apr-iconv失败请检查相对应文件")
         os._exit(12)
     print("apr-iconv编译安装完成...................................................")
+
+
+    print("开始编译expat..........................................................")
+    time.sleep(3)
+    checkExpat = os.system("cd /tmp/tomcat/expat* && ./configure --prefix=/usr/local/expat && make && make install ")
+    if 0 != checkExpat:
+        print("编译expat文件失败请检查依赖项")
+        os._exit(13)
+    print("expat编译安装完成......................................................")
+
+
     print("开始编译apr-util.......................................................")
     time.sleep(3)
-    checkAprUtil = os.system("cd /tmp/tomcat/apr-util* && ./configure --prefix=/usr/local/apr-util "
-                             "--with-apr=/usr/local/apr --with-apr-iconv=/usr/local/apr-iconv/bin/apriconv "
-                             "&& make && make install")
+    checkAprUtil = os.system("cd /tmp/tomcat/apr-util* && ./configure --prefix=/usr/local/apr-util"
+                             " --with-apr=/usr/local/apr --with-apr-iconv=/usr/local/apr-iconv/bin/apriconv"
+                             " --with-expat=/usr/local/expat && make && make install")
     if 0 != checkAprUtil:
         print("编译apr-util失败请检查相对应文件")
-        os._exit(13)
+        os._exit(14)
     print("apr-util编译安装完成.......................................................")
+
+
     print("开始编译TomcatNative.......................................................")
     time.sleep(3)
     os.system("groupadd web && useradd -g web -s /bin/false -M tomcat")
@@ -101,73 +109,67 @@ def make_tomcat(jdkHome):
         print("TomcatNative编译失败，请检查对应路径")
         os._exit(14)
     print("TomcatNative编译安装完成............................................................")
-    print("installing tomcat...................................................................")
+
+    print("安装 tomcat...................................................................")
     time.sleep(3)
-    os.system("mv /tmp/tomcat/apache-tomcat* /usr/local/ && ln -s /usr/local/apache-tomcat* /usr/local/tomcat")
     os.system("cp -R /usr/local/apr/lib/* /usr/lib64 && cp -R /usr/local/apr/lib/* /usr/lib")
+    os.system("mv /tmp/tomcat/apache-tomcat* /usr/local/ && ln -s /usr/local/apache-tomcat* /usr/local/tomcat")
+    os.system("ln -s /usr/local/tomcat/conf /etc/tomcat && ln -s /usr/local/tomcat/logs /var/log/tomcat")
     print("install tomcat done.................................................................")
 
 
 def tomcat_optimization(tomcatApr):
     time.sleep(3)
     print("starting tomcat optimization......................................................")
-    os.system("mv -f " + tomcatApr +"/server.xml /usr/local/tomcat/conf/" )
-    os.system("mv -f " + tomcatApr +"/tomcat-user.xml /usr/local/tomcat/conf/" )
-    tomcatProject = "/usr/local/tomcat/webapps/project/"
-    os.system("mkdir " + tomcatProject + " && mv " + tomcatApr + "/manager " + tomcatProject)
+    os.system("mv " + tomcatApr + "/server.xml /usr/local/tomcat/conf/")
+    os.system("mv " + tomcatApr + "/tomcat-users.xml /usr/local/tomcat/conf/")
+    tomcatProject = "/usr/local/tomcat/webapps/"
+    os.system("rm -rf " + tomcatApr + "/manager/ && mv " + tomcatApr + "/manager " + tomcatProject)
     os.system("chown -hR tomcat:web /usr/local/{apache-tomcat*,tomcat}")
     print("tomcat optimization done...........................................................")
 
 
-def enable_tomcat(jdkHome):
-    enableTomcat = open("/lib/systemd/system/tomcat.service","w")
-    enableTomcat.write("[Unit]\n")
-    enableTomcat.write("Description=Apache Tomcat 8\n")
-    enableTomcat.write("After=syslog.target network.target\n\n")
-    enableTomcat.write("[Service]\n")
-    enableTomcat.write("Type=forking\n")
-    enableTomcat.write("User=tomcat\n")
-    enableTomcat.write("Group=web\n\n")
-    enableTomcat.write("Environment=JAVA_HOME=" + jdkHome + "\n")
-    enableTomcat.write("Environment=CATALINA_PID=/usr/local/tomcat/temp/tomcat.pid\n")
-    enableTomcat.write("Environment=CATALINA_HOME=/usr/local/tomcat\n")
-    enableTomcat.write("Environment=CATALINA_BASE=/usr/local/tomcat\n")
-    enableTomcat.write("Environment='CATALINA_OPTS=-Dfile.encoding=UTF-8 -server -Xms4096m -Xmx4096m -Xmn1024m "
-                       "-XX:MetaspaceSize=512M -XX:MaxMetaspaceSize=512M -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled "
-                       "-XX:+HeapDumpOnOutOfMemoryError -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps "
-                       "-Xloggc:/var/log/tomcat/gc.log -XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly'\n")
-    enableTomcat.write("Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'\n\n")
-    enableTomcat.write("ExecStart=/usr/local/tomcat/bin/startup.sh\n")
-    enableTomcat.write("ExecStop=/usr/local/tomcat/bin/shutdown.sh\n")
-    enableTomcat.write("Restart=on-failure\n\n")
-    enableTomcat.write("[Install]\n")
-    enableTomcat.write("WantedBy=multi-user.target\n")
-    enableTomcat.close()
-    print("完成tomcat自启动...........................................................")
-    print("test tomcat enable,.............................................")
+def enable_tomcat(tomcatApr):
+
+    os.system("cp /tmp/tomcat/tomcat-apr/tomcat /etc/init.d/tomcat && chmod 755 /etc/init.d/tomcat")
+    os.system("chkconfig tomcat on")
     time.sleep(6)
-    os.system("systemctl daemon-reload && systemctl enable tomcat && init 6")
+    print("完成tomcat自启�?..........................................................")
 
 
 def system_firewalld():
     os.system("systemctl start firewalld")
     os.system("firewall-cmd --permanent --add-port=8080/tcp --zone=public")
-    os.system("firewall-cmd --permanent --add-service=ftp --zone=public")
-    os.system("firewall-cmd --permanent --add-service=http --zone=public")
+    os.system("firewall-cmd --permanent --add-service=ssh --zone=public")
     os.system("firewall-cmd --reload")
+    print("防火墙配置成�?................................................................")
+    print("此服务器仅开�?080 22 端口,若需调整请联系系统维护人�?.............................")
 
+
+
+def replace(file_path, old_str, new_str):
+    try:
+        f = open(file_path,'r+')
+        all_lines = f.readlines()
+        f.seek(0)
+        f.truncate()
+        for line in all_lines:
+            line = line.replace(old_str, new_str)
+            f.write(line)
+        f.close()
+    except Exception,e:
+        print e
 
 def install_tomcat():
     install_gcc()
     tomcatApr = download_tomcat()
     jdkHome = jdk_configure()
-    make_tomcat(jdkHome)
-    #tomcat_optimization(tomcatApr)
+    make_tomcat(jdkHome,tomcatApr)
+    tomcat_optimization(tomcatApr)
     enable_tomcat(jdkHome)
     system_firewalld()
 
-	
 if __name__ == '__main__':
-    print("此脚本运行环境为Centos7.5,若其他版本出现错误请自行更改或联系mail\n请使用root用户运行")
+    print("正在检测系统环�?.................................................................")
     time.sleep(5)
     install_tomcat()

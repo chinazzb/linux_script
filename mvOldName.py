@@ -5,12 +5,9 @@
 #Author: Duan Yu
 #Mail:  cn-duanyu@foxmail.com or chinazzbcn@gmail.com
 
-import shutil
 import os
 
-for root, dirs, files in os.walk('D:\\ftp', topdown=False):
-    for name in files:
-        filePath = (os.path.join(root,name))
-        print (filePath)
-        if shutil.
+check = os.path.exists("F:\it")
+if not check:
+    print("echo if ")
 

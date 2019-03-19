@@ -21,7 +21,7 @@ cf.read("./test.ini",encoding="utf-8-sig")
 # #获得db的参数的值
 # kvs = cf.items("db")
 # print(kvs,type(kvs))
-nginx_processes = cf.get("nginx","proxy_tomcat")
-print(nginx_processes)
+test = cf.get("tomcat","tarFilePath")
+print(test)
 
 

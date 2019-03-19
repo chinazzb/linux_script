@@ -6,5 +6,3 @@
 #mail:chinazzbcn@gmail.com or cn-duanyu@foxmail.com
 #Date:01-24-2019
 #version: 0.9
-
-class db2_
