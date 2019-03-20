@@ -11,7 +11,7 @@ import configparser
 
 cf = configparser.ConfigParser()
 
-cf.read("./test.ini",encoding="utf-8-sig")
+cf.read("./install.conf",encoding="utf-8-sig")
 # #获得所有大项
 # secs = cf.sections()
 # print(secs,type(secs))
