@@ -7,6 +7,7 @@
 #Date: 2018-10-25
 #version: 0.0.2
 
+#将源码装换成编译过的文件
 import py_compile
 import os
 

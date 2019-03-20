@@ -21,13 +21,12 @@
 
   <Service name="Catalina">
 
-    <Executor  name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="1000"
-		       minSpareThreads="400"
-			   maxIdleTime="60000"
-			   prestartminSpareThreads = "true"
+    <Executor  name="tomcatThreadPool" namePrefix="catalina-exec-" maxThreads="1000" minSpareThreads="400"
+			   maxIdleTime="60000" prestartminSpareThreads = "true"
 			   maxQueueSize = "100"/>
 
-    <Connector  executor="tomcatThreadPool" port="8080" protocol="org.apache.coyote.http11.Http11AprProtocol" connectionTimeout="60000"
+    <Connector  executor="tomcatThreadPool" port="8080" protocol="org.apache.coyote.http11.Http11AprProtocol"
+                connectionTimeout="60000"
 				maxConnections="5000" redirectPort="8443" enableLookups="false" acceptCount="300"
 				maxPostSize="10485760" maxHttpHeaderSize="8192" compression="off"
                 disableUploadTimeout="true" compressionMinSize="2048"

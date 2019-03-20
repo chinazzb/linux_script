@@ -65,7 +65,7 @@ def arrange_dir(fileName):
         if pathLength == 92:
             newPath = getFileDataBank(fileName,66,75)
             return newPath
-    if ".SK" in fileName:
+ #   if ".SK" in fileName:
 
 #move file,error message write log  移动文件,错误信息写入文件 
 def move_file(oldPath,logPath):
