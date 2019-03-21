@@ -56,9 +56,9 @@ class db2config:
 
     @staticmethod
     def db2Configure():
-		os.system("/opt/server_t/db2_install")
+        os.system("/opt/server_t/db2_install")
         os.system("/opt/ibm/db2/V10.5/instance/dascrt -u dasusr1")
-        os.system("/opt/ibm/db2/V10.5/instance/db2icrt -a server -u db2fenc1 db2inst1")
+        os.system("/opt/ib m/db2/V10.5/instance/db2icrt -a server -u db2fenc1 db2inst1")
         os.system('su - db2inst1 -c "db2set DB2COMM=TCPIP"')
         os.system('su - db2inst1 -c "db2 update dbm cfg using SVCENAME 50000"')
         os.system('su - db2inst1 -c "db2start"')

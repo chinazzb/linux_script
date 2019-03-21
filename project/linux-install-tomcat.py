@@ -14,7 +14,7 @@ import configparser
 
 
 cf = configparser.ConfigParser()
-configFilePath = "../install.conf"
+configFilePath = "./install.conf"
 cf.read(configFilePath,encoding="utf-8-sig")
 
 tomcatTar = cf.get("tomcat","tarFilePath")
@@ -31,8 +31,12 @@ class system:
         systemType = cf.get("system","system_type")
         check = 1
         if 'Centos' in systemType:
+            print(systemType+"系统.................................")
+            time.sleep(3)
             check = os.system("yum install -y gcc gcc-c++ bzip2 ")
         elif 'SUSE' in systemType:
+            print(systemType+"系统.................................")
+            time.sleep(3)
             check = os.system("zypper install -y gcc gcc-c++ bzip2 ")
 
         if 0 != check:
@@ -48,18 +52,20 @@ class system:
         os.system("mv " + tomcatTmpPath + " /tmp/tomcatBak")
         os.system("mkdir " + tomcatTmpPath)
         os.system("tar xvf " + tomcatTar + " -C " + tomcatTmpPath)
-        os.system("for i in " + tomcatTmpPath + "/*.tar.gz;do tar zxvf $i -C " + tomcatTmpPath + ";done")
-        os.system("tar xvf " + tomcatTmpPath + "/expat* -C " + tomcatTmpPath)
+        os.system("for i in " + tomcatApr + "/*.tar.gz;do tar zxvf $i -C " + tomcatTmpPath + ";done")
+        os.system("tar xvf " + tomcatApr + "/expat* -C " + tomcatTmpPath)
 
     @staticmethod
     def jdk_configure():
-        jdkPath = tomcatApr
+        jdkPath = tomcatTmpPath
         os.system("rm -rf " + jdkInstallPath)
         os.system("mkdir " + jdkInstallPath)
         os.system("mv " + jdkPath + "/jdk* " + jdkInstallPath)
         jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
         #检查是否已经配置javahome
-        checkJavaHome = os.system("cat /etc/profile | grep JAVAHOME")
+        print("开始配置JAVAHOME....................................")
+        time.sleep(3)
+        checkJavaHome = os.system("cat /etc/profile | grep JAVA_HOME > /dev/null")
         if 0 != checkJavaHome:
             profile = open("/etc/profile","a")
             profile.write("JAVA_HOME=" + jdkHome + "\n")
@@ -69,7 +75,9 @@ class system:
             profile.write("PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin\n")
             profile.write("export JAVA_HOME JRE_HOME PATH CLASSPATH LD_LIBRARY_PATH\n")
             profile.close()
-            return jdkHome
+            print("JAVAHOME已配置完毕")
+        else:
+            print("JAVAHOME已存在无需配置....................................")
 
     @staticmethod
     def system_firewalld():
@@ -89,14 +97,14 @@ class system:
 class software:
     @staticmethod
     def make_tomcat_apr():
-        print("开始编译tomcat.........................................................")
+        print("开始编译tomcat及依赖包.........................................................")
         time.sleep(3)
         #tomcat
-        replace(tomcatApr + "/apr-1.6.5/configure","RM='$RM'","RM='$RM -f'")
+        replace(tomcatTmpPath + "/apr-1.6.5/configure","RM='$RM'","RM='$RM -f'")
         #make
         print("开始编译apr............................................................")
         time.sleep(3)
-        checkApr = os.system("cd " + tomcatApr + "/apr-* && ./configure --prefix=/usr/local/apr/ && make && make install")
+        checkApr = os.system("cd " + tomcatTmpPath + "/apr-* && ./configure --prefix=/usr/local/apr/ && make && make install")
         if 0 != checkApr:
             print("编译apr失败请检查相对应文件")
             os._exit(11)
@@ -106,7 +114,7 @@ class software:
     def make_tomcat_apr_iconv():
         print("开始编译apr-iconv.......................................................")
         time.sleep(3)
-        checkAprIconv = os.system("cd "+ tomcatApr + "/apr-iconv* && ./configure --prefix=/usr/local/apr-iconv/ "
+        checkAprIconv = os.system("cd "+ tomcatTmpPath + "/apr-iconv* && ./configure --prefix=/usr/local/apr-iconv/ "
                                                          "--with-apr=/usr/local/apr && make && make install")
         if 0 != checkAprIconv:
             print("编译apr-iconv失败请检查相对应文件")
@@ -117,7 +125,7 @@ class software:
     def make_expat():
         print("开始编译expat..........................................................")
         time.sleep(3)
-        checkExpat = os.system("cd " + tomcatApr + "/expat* && ./configure --prefix=/usr/local/expat && make && make install ")
+        checkExpat = os.system("cd " + tomcatTmpPath + "/expat* && ./configure --prefix=/usr/local/expat && make && make install ")
         if 0 != checkExpat:
             print("编译expat文件失败请检查依赖项")
             os._exit(13)
@@ -127,7 +135,7 @@ class software:
     def make_tomcat_apr_util():
         print("开始编译apr-util.......................................................")
         time.sleep(3)
-        checkAprUtil = os.system("cd " + tomcatApr + "/apr-util* && ./configure --prefix=/usr/local/apr-util"
+        checkAprUtil = os.system("cd " + tomcatTmpPath + "/apr-util* && ./configure --prefix=/usr/local/apr-util"
                                                          " --with-apr=/usr/local/apr --with-apr-iconv=/usr/local/apr-iconv/bin/apriconv"
                                                          " --with-expat=/usr/local/expat && make && make install")
         if 0 != checkAprUtil:
@@ -141,7 +149,7 @@ class software:
         print("开始编译TomcatNative.......................................................")
         time.sleep(3)
         os.system("groupadd web && useradd -g web -s /bin/false -M tomcat")
-        checkTomcatNative = os.system("cd /tmp/tomcat/apache-tomcat-*/bin/ && tar zxvf tomcat-native.tar.gz && "
+        checkTomcatNative = os.system("cd " + tomcatTmpPath + "/apache-tomcat-*/bin/ && tar zxvf tomcat-native.tar.gz && "
                                       "cd tomcat-native-*/native && ./configure --with-apr=/usr/local/apr/bin/apr-1-config "
                                       "--with-java-home=" + jdkHome + " && make && make install")
         if 0 != checkTomcatNative:
@@ -164,17 +172,16 @@ class software:
     def optimization_tomcat():
         time.sleep(3)
         print("starting tomcat optimization......................................................")
-        os.system("mv -f " + tomcatApr + "/server.xml /etc/tomcat/")
-        minThread = "minSpareThreads" + cf.getint("tomcat","minThread")+'"'
-        maxThread = "maxThreads" + cf.getint("tomcat","maxThread")+'"'
+        minThread = "minSpareThreads" + cf.get("tomcat","minThread")+'"'
+        maxThread = "maxThreads" + cf.get("tomcat","maxThread")+'"'
         replace("/etc/tomcat/server.xml",'minSpareThreads="400"',minThread)
         replace("/etc/tomcat/server.xml",'maxThreads="1000"',maxThread)
-        os.system("mv -f " + tomcatApr + "/tomcat-users.xml /etc/tsomcat/")
         tomcatProject = tomcatInstallPath + "/webapps/"
-        os.system("mv -f " + tomcatApr + "/manager " + tomcatProject)
-        os.system("chown -hR tomcat:web /usr/local/{apache-tomcat*," + tomcatInstallPath + "}")
 
-
+        os.system("mv  " + tomcatApr + "/server.xml /etc/tomcat/")
+        os.system("mv  " + tomcatApr + "/tomcat-users.xml /etc/tomcat/")
+        os.system("rm -rf " + tomcatProject + " && mv  " + tomcatApr + "/manager/ " + tomcatProject)
+        os.system("chown -hR tomcat:web {/usr/local/apache-tomcat*," + tomcatInstallPath + "}" )
         print("tomcat optimization done...........................................................")
 
     @staticmethod
@@ -200,7 +207,20 @@ def replace(file_path, old_str, new_str):
         print e
 
 def integeration():
-    system
-    software
+    #system
+    system.install_gcc()
+    system.tarz_tomcat()
+    system.jdk_configure()
+
+    #software
+    software.make_tomcat_apr()
+    software.make_tomcat_apr_iconv()
+    software.make_expat()
+    software.make_tomcat_apr_util()
+    software.make_tomcatNative()
+    software.install_tomcat()
+    software.optimization_tomcat()
+    software.enable_tomcat()
+
 if __name__ == '__main__':
     integeration()

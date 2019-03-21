@@ -25,6 +25,12 @@ def depend():
     #setuptools
     os.system("cd /tmp/python/setuptools*/ && python setup.py install")
 
+    #configparser
+    os.system("cd /tmp/python/configparser*/ && python setup.py install")
+
+    #ordereddict
+    os.system("cd /tmp/python/ordereddict*/ && python setup.py install")
+
     #pip
     os.system("cd /tmp/python/pip*/ && python setup.py install")
 
