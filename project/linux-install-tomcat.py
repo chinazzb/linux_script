@@ -172,8 +172,8 @@ class software:
     def optimization_tomcat():
         time.sleep(3)
         print("starting tomcat optimization......................................................")
-        minThread = "minSpareThreads" + cf.get("tomcat","minThread")+'"'
-        maxThread = "maxThreads" + cf.get("tomcat","maxThread")+'"'
+        minThread = '"minSpareThreads=" '+ cf.get("tomcat","minThread") + '"'
+        maxThread = '"maxThreads="'+ cf.get("tomcat","maxThread") + '"'
         replace("/etc/tomcat/server.xml",'minSpareThreads="400"',minThread)
         replace("/etc/tomcat/server.xml",'maxThreads="1000"',maxThread)
         tomcatProject = tomcatInstallPath + "/webapps/"

@@ -12,40 +12,50 @@
 
 
 import os
+import time
+import configparser
+
+cf = configparser.ConfigParser
+confFilePath = "./install.conf"
+cf.read(confFilePath,encoding="utf-8-sig")
 
 class system:
     @staticmethod
-    def zypper():
-        checkzypper = os.system("zypper install -y gcc gcc-c++")
-        if 0!= checkzypper:
-            print("zypper fatal error...................................")
-            os._exit(1)
+    def install_gcc():
+        systemType = cf.get("system","system_type")
+        check = 1
+        if 'Centos' in systemType:
+            print(systemType+"系统.................................")
+            time.sleep(3)
+            check = os.system("yum install -y gcc gcc-c++ bzip2 ")
+        elif 'SUSE' in systemType:
+            print(systemType+"系统.................................")
+            time.sleep(3)
+            check = os.system("zypper install -y gcc gcc-c++ bzip2 ")
+
+        if 0 != check:
+            print("请检查zypp源 or yum源 是否正常使用")
+            os._exit(3)
+
     @staticmethod
     def createUserGroup():
-        os.system("groupadd web && useradd -g web -s /bin/false nginx")
+        os.system("groupadd nginx && useradd -g web -s /bin/false nginx")
         os.system("rm -rf /tmp/nginx && mkdir -p /tmp/nginx/tar")
 
     @staticmethod
     def tarNginx():
-        nginxName = "nginx.tar"
-        nginxPath = ""
-        while True:
-            nginxPath = raw_input("input absolute path to the nginx Tar File:")
-            if os.path.exists(nginxPath):
-                break
-
-        os.system("tar xvf " + nginxPath +"/" + nginxName + " -C /tmp/nginx/tar")
-        os.system("for i in /tmp/nginx/tar/*.tar.gz;do tar zxvf $i -C /tmp/nginx/;done")
-
-
-
-
+        tarFilePath = cf.get("nginx","tarFilePath")
+        tmpPath = cf.get("nginx","tmpPath")
+        installPath = cf.get("nginx","installPath")
+        os.system("rm -rf " + tmpPath + " && mkdir " +tmpPath)
+        os.system("tar xvf " + tarFilePath + " -C " + tmpPath)
+        os.system("for i in " + tmpPath + "/*.tar.gz;do tar zxvf $i -C " + tmpPath +";done")
 
 class nginxConfig:
 
     @staticmethod
     def makeNginx():
-        checkConfigure = os.system("cd /tmp/nginx/nginx-* && ./configure --user=nginx --group=web --prefix=/usr/local/nginx "
+        checkConfigure = os.system("cd /tmp/nginx/nginx-* && ./configure --user=nginx --group=nginx --prefix=/usr/local/nginx "
                                    "--with-stream --with-pcre=/tmp/nginx/pcre-8.41 --with-zlib=/tmp/nginx/zlib-1.2.11 "
                                    "--http-log-path=/var/log/nginx --error-log-path=/var/log/nginx")
         if 0 != checkConfigure:
