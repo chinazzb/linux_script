@@ -31,8 +31,6 @@ def depend():
     #ordereddict
     os.system("cd /tmp/python/ordereddict*/ && python setup.py install")
 
-    #
-
     #pip
     os.system("cd /tmp/python/pip*/ && python setup.py install")
 
