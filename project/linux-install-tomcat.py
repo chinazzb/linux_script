@@ -21,14 +21,14 @@ tomcatTar = cf.get("tomcat","tarFilePath")
 tomcatTmpPath = cf.get("tomcat","tmpPath")
 tomcatApr = tomcatTmpPath + "/tomcat-apr"
 tomcatInstallPath = cf.get("tomcat","installPath")
-jdkInstallPath = cf.get("java","jdkInstallPath")
+jdkInstallPath = cf.get("java","installPath")
+systemType = cf.get("system","system_type")
 
 
 class system:
 
     @staticmethod
     def install_gcc():
-        systemType = cf.get("system","system_type")
         check = 1
         if 'Centos' in systemType:
             print(systemType+"系统.................................")
@@ -72,6 +72,8 @@ class system:
             profile.write("JRE_HOME=$JAVA_HOME/jre\n")
             profile.write("CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib\n")
             profile.write("LD_LIBRARY_PATH=/usr/local/apr/lib:$LD_LIBRARY_PATH\n")
+            profile.write("CATALINA_HOME=" + tomcatInstallPath + "\n")
+            profile.write("CATALINA_BASE=" + tomcatInstallPath + "\n")
             profile.write("PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin\n")
             profile.write("export JAVA_HOME JRE_HOME PATH CLASSPATH LD_LIBRARY_PATH\n")
             profile.close()
@@ -82,16 +84,20 @@ class system:
     @staticmethod
     def system_firewalld():
         #openPort = cf.get("system","openPort")
-        firewallPort= 'FW_SERVICES_EXT_TCP="80 22"'
-        os.system("service SuSEfirewall2_setup start")
-        os.system("service SuSEfirewall2_init start")
-        replace('/etc/sysconfig/SuSEfirewall2','FW_SERVICES_EXT_TCP=""',firewallPort)
-        os.system("chkconfig SuSEfirewall2_setup on")
-        os.system("chkconfig SuSEfirewall2_init on")
-        os.system("service SuSEfirewall2_setup restart")
-        os.system("service SuSEfirewall2_init restart")
-        print("防火墙配置成功.................................................................")
-        print("此服务器仅开放8080 22 端口,若需调整请联系系统维护人员..............................")
+        if "SUSE" in systemType:
+            firewallPort= 'FW_SERVICES_EXT_TCP="80 22"'
+            os.system("service SuSEfirewall2_setup start")
+            os.system("service SuSEfirewall2_init start")
+            replace('/etc/sysconfig/SuSEfirewall2','FW_SERVICES_EXT_TCP=""',firewallPort)
+            os.system("chkconfig SuSEfirewall2_setup on")
+            os.system("chkconfig SuSEfirewall2_init on")
+            os.system("service SuSEfirewall2_setup restart")
+            os.system("service SuSEfirewall2_init restart")
+            print("防火墙配置成功.................................................................")
+            print("此服务器仅开放8080 22 端口,若需调整请联系系统维护人员..............................")
+        if "Centos" in systemType:
+            os.system("systemclt start firewalld")
+            os.system("firewall-cmd --add-port=")
 
 
 class software:

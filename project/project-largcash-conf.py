@@ -7,17 +7,11 @@
 #Date: 07-12-2018
 #version: 0.9
 
-def writeFile():
-    parameterArr =()
-    while True:
-        print("如下格式db2,127.0.0.1,50000,cash,db2inst1,Cash123+")
-        parameter = raw_input("请输入数据库连接参数,参考上面格式使用“,”分隔:")
-        parameterArr = parameter.split(',')
-        if len(parameterArr) == 6:
-            break
+import os
+import configparser
 
-    defaultConfFilePath = "/usr/local/tomcat/webapps/largecash/WEB-INF/classes/"
-    defaultConfFileName = "db.properties"
+def writeFile():
+
     confFile = open('C:\\Users\\DuanYU\\Desktop\\temp\\test.txt','w')
     if 'mysql' == parameterArr[0]:
         confFile.write("SQL_DRIVER=com.mysql.jdbc.Driver\n")
