@@ -8,30 +8,33 @@
 #version: 0.9
 
 
-#SUSE 11 SP3
+#linux Centos Redhat SUSE
 
 
 import os
 import time
 import configparser
 
-cf = configparser.ConfigParser
+cf = configparser.ConfigParser()
 confFilePath = "./install.conf"
 cf.read(confFilePath,encoding="utf-8-sig")
+
+tarFilePath = cf.get("nginx","tarFilePath")
+tmpPath = cf.get("nginx","tmpPath")
+systemType = cf.get("system","system_type")
 
 class system:
     @staticmethod
     def install_gcc():
-        systemType = cf.get("system","system_type")
         check = 1
-        if 'Centos' in systemType:
-            print(systemType+"系统.................................")
+        if 'Centos' in systemType or 'Redhat'in systemType:
+            print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("yum install -y gcc gcc-c++ bzip2 ")
+            check = os.system("yum install -y gcc gcc-c++")
         elif 'SUSE' in systemType:
-            print(systemType+"系统.................................")
+            print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++ bzip2 ")
+            check = os.system("zypper install -y gcc gcc-c++")
 
         if 0 != check:
             print("请检查zypp源 or yum源 是否正常使用")
@@ -40,52 +43,135 @@ class system:
     @staticmethod
     def createUserGroup():
         os.system("groupadd nginx && useradd -g web -s /bin/false nginx")
-        os.system("rm -rf /tmp/nginx && mkdir -p /tmp/nginx/tar")
 
     @staticmethod
     def tarNginx():
-        tarFilePath = cf.get("nginx","tarFilePath")
-        tmpPath = cf.get("nginx","tmpPath")
-        installPath = cf.get("nginx","installPath")
         os.system("rm -rf " + tmpPath + " && mkdir " +tmpPath)
         os.system("tar xvf " + tarFilePath + " -C " + tmpPath)
         os.system("for i in " + tmpPath + "/*.tar.gz;do tar zxvf $i -C " + tmpPath +";done")
 
-class nginxConfig:
+    @staticmethod
+    def firewalld():
+        openPortList = cf.get("system","openPort")
+        openPortListSplit = str(openPortList).split(" ")
+        #Centos Redhat
+        if 'Centos' in systemType or 'Redhat' in systemType:
+            os.system("systemctl start firewalld")
+            for i in range(len(openPortListSplit)):
+                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp ")
+            os.system("firewall-cmd --reload")
+        elif 'SUSE' in systemType:
+            firewallFile ="/etc/sysconfig/SuSEfirewall2"
+            replace(firewallFile,'FW_SERVICES_EXT_TCP=""','FW_SERVICES_EXT_TCP="'+openPortList+'"')
+            os.system("rcSuSEfirewall2 start")
+            os.system("chkconfig SuSEfirewall2_init on")
+            os.system("chkconfig SuSEfirewall2_setup on")
 
+
+
+class nginxConfig:
     @staticmethod
     def makeNginx():
-        checkConfigure = os.system("cd /tmp/nginx/nginx-* && ./configure --user=nginx --group=nginx --prefix=/usr/local/nginx "
-                                   "--with-stream --with-pcre=/tmp/nginx/pcre-8.41 --with-zlib=/tmp/nginx/zlib-1.2.11 "
-                                   "--http-log-path=/var/log/nginx --error-log-path=/var/log/nginx")
+        nginxInstllPath = cf.get("nginx","installPath")
+        os.system("rm -rf " + nginxInstllPath)
+        checkConfigure = os.system("cd " + tmpPath +"/nginx-* && ./configure --user=nginx --group=nginx"
+                                                    " --prefix=" + nginxInstllPath + " --with-stream"
+                                                    " --with-pcre=" + tmpPath + "/pcre-8.41"
+                                                    " --with-zlib=" + tmpPath + "/zlib-1.2.11")
         if 0 != checkConfigure:
             print("configure nginx fatal error.................................")
             os._exit(10)
-        checkMake = os.system("cd /tmp/nginx/nginx*/ && make && make install")
+        checkMake = os.system("cd " + tmpPath + "/nginx*/ && make && make install")
         if 0 != checkMake:
             print("make nginx fatal error.......................................")
             os._exit(11)
 
     @staticmethod
-    def softwConnect():
-        checkNginxPath = os.path.exists("/usr/local/nginx/")
-        if not checkNginxPath:
-            print(" not be found '/usr/local/nginx' ")
-            os._exit(12)
+    def optimization():
+        # print("start optimization nginx .........................")
+        # time.sleep(3)
+        nginxInstall = cf.get("nginx","installPath")
+        nginxConfigPath= nginxInstall+"/conf"
+        # print("start optimization nginx done.....................")
+        #
+        # #soft link
+        # print("create soft link nginx ........................")
+        # time.sleep(2)
+        # os.system("rm -f /etc/nginx")
+        # os.system("ln -s " + nginxConfigPath + " /etc/nginx")
+        # os.system("rm -rf " + nginxConfigPath + "/nginx.conf && cp " + tmpPath + "/nginx.conf " + nginxConfigPath)
+        # print("create soft link nginx done ....................")
+        #
+        # #nginx port
+        # print("configure nginx port .........................")
+        # time.sleep(2)
+        # port = cf.get("nginx","port")
+        # port = "listen " + port
+        # replace(nginxConfigPath + "/nginx.conf","listen 80",port)
+        # print("configure nginx port done.....................")
+        #
+        #
+        # #worker_processes
+        # print("configure nginx worker_processes .........................")
+        # time.sleep(2)
+        # worker_processes = cf.get("nginx","worker_processes")
+        # replace(nginxConfigPath + "/nginx.conf" ,"worker_processes 2","worker_processes " + worker_processes)
+        # print("configure nginx worker_processes done.....................")
+        #
+        #
+        # #worker_connections
+        # print("configure nginx worker_connections .....................")
+        # time.sleep(2)
+        # worker_connections = cf.get("nginx","worker_connections")
+        # replace(nginxConfigPath + "/nginx.conf","worker_connections  1024","worker_connections " + worker_connections)
+        # print("configure nginx worker_connections done.....................")
 
-        os.system(" ln -s /usr/local/nginx/conf /etc/nginx ")
 
-    @staticmethod
-    def serviceFile():
-        os.system("mv /tmp/nginx/nginx")
+        #proxy tomcat
+        print("configure nginx upstream server .....................")
+        time.sleep(2)
+        proxyTomcatList = cf.get("nginx","proxyTomcat")
+        proxyTomcatListSplit = str(proxyTomcatList).split(",")
+        for i in range(len(proxyTomcatListSplit)):
+            os.system("sed -i '44a\ \tserver " + proxyTomcatListSplit[i] + ";' " + nginxConfigPath + "/nginx.conf")
+        print("configure nginx upstream server done .................")
+
+        # #project type
+        # print("configure nginx upstream project type .....................")
+        # time.sleep(2)
+        # projectTypeList = cf.get("project","projectType")
+        # projectTypeListSplit = str(projectTypeList).split(",")
+        # if 1 == len(projectTypeListSplit):
+        #     replace(nginxConfigPath,"largecash",projectTypeList)
+        # else:
+        #     print("目前只允许填写单个项目,此项不做操作，继续允许下一步.请手动配置")
+        # print("configure nginx upstream project type done..................")
 
 
-def installNginx():
-    system.zypper()
+#replace file string
+def replace(file_path, old_str, new_str):
+    try:
+        f = open(file_path,'r+')
+        all_lines = f.readlines()
+        f.seek(0)
+        f.truncate()
+        for line in all_lines:
+            line = line.replace(old_str, new_str)
+            f.write(line)
+        f.close()
+    except Exception,e:
+        print e
+
+
+def integeration():
+    system.install_gcc()
     system.createUserGroup()
     system.tarNginx()
+    system.firewalld()
+
     nginxConfig.makeNginx()
-    nginxConfig.softwConnect()
+    nginxConfig.optimization()
+
 
 if __name__ == '__main__':
-    installNginx()
+    integeration()

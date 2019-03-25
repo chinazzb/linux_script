@@ -30,7 +30,7 @@ class system:
     @staticmethod
     def install_gcc():
         check = 1
-        if 'Centos' in systemType:
+        if 'Centos' in systemType or 'Redhat' in systemType:
             print(systemType+"系统.................................")
             time.sleep(3)
             check = os.system("yum install -y gcc gcc-c++ bzip2 ")
