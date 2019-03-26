@@ -30,14 +30,14 @@ class system:
     @staticmethod
     def install_gcc():
         check = 1
-        if 'Centos' in systemType or 'Redhat' in systemType:
-            print(systemType+"系统.................................")
+        if 'Centos' in systemType or 'Redhat'in systemType:
+            print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("yum install -y gcc gcc-c++ bzip2 ")
+            check = os.system("yum install -y gcc gcc-c++")
         elif 'SUSE' in systemType:
-            print(systemType+"系统.................................")
+            print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++ bzip2 ")
+            check = os.system("zypper install -y gcc gcc-c++")
 
         if 0 != check:
             print("请检查zypp源 or yum源 是否正常使用")
@@ -49,11 +49,11 @@ class system:
             print('请检查配置文件,[tomcat]子项下的 "tomcatFilePath" 是否存在')
             os._exit(4)
         #tmp dir
-        os.system("mv " + tomcatTmpPath + " /tmp/tomcatBak")
+        os.system("rm -rf  " + tomcatTmpPath)
         os.system("mkdir " + tomcatTmpPath)
         os.system("tar xvf " + tomcatTar + " -C " + tomcatTmpPath)
-        os.system("for i in " + tomcatApr + "/*.tar.gz;do tar zxvf $i -C " + tomcatTmpPath + ";done")
-        os.system("tar xvf " + tomcatApr + "/expat* -C " + tomcatTmpPath)
+        os.system("for i in " + tomcatTmpPath + "/*.tar.gz;do tar zxvf $i -C " + tomcatTmpPath + ";done")
+        os.system("tar xvf " + tomcatTmpPath + "/expat* -C " + tomcatTmpPath)
 
     @staticmethod
     def jdk_configure():
@@ -180,19 +180,26 @@ class software:
         print("starting tomcat optimization......................................................")
         minThread = '"minSpareThreads=" '+ cf.get("tomcat","minThread") + '"'
         maxThread = '"maxThreads="'+ cf.get("tomcat","maxThread") + '"'
-        replace("/etc/tomcat/server.xml",'minSpareThreads="400"',minThread)
-        replace("/etc/tomcat/server.xml",'maxThreads="1000"',maxThread)
+        replace(tomcatTmpPath + "/server.xml",'minSpareThreads="400"',minThread)
+        replace(tomcatTmpPath + "/server.xml",'maxThreads="1000"',maxThread)
         tomcatProject = tomcatInstallPath + "/webapps/"
 
-        os.system("mv  " + tomcatApr + "/server.xml /etc/tomcat/")
-        os.system("mv  " + tomcatApr + "/tomcat-users.xml /etc/tomcat/")
-        os.system("rm -rf " + tomcatProject + " && mv  " + tomcatApr + "/manager/ " + tomcatProject)
+        #server
+        os.system("rm -rf /etc/tomcat/server.xml")
+        os.system("mv  " + tomcatInstallPath + "/server.xml /etc/tomcat/")
+        #tomcat-users
+        os.system("rm -rf /etc/tomcat/tomcat-users.xml")
+        os.system("mv  " + tomcatInstallPath + "/tomcat-users.xml /etc/tomcat/")
+
+        #tomcat manager
+        os.system("rm -rf " + tomcatProject + " && mv  " + tomcatInstallPath + "/manager/ " + tomcatProject)
         os.system("chown -hR tomcat:web {/usr/local/apache-tomcat*," + tomcatInstallPath + "}" )
+
         print("tomcat optimization done...........................................................")
 
     @staticmethod
     def enable_tomcat():
-        os.system("cp " + tomcatApr + "/tomcat /etc/init.d/tomcat && chmod 755 /etc/init.d/tomcat")
+        os.system("cp " + tomcatInstallPath + "/tomcat /etc/init.d/tomcat && chmod 755 /etc/init.d/tomcat")
         os.system("chkconfig tomcat on")
         time.sleep(6)
         print("完成tomcat自启动...........................................................")

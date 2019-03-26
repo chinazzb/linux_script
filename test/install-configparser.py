@@ -10,6 +10,11 @@
 import os
 
 def depend():
+    #tar file
+    tarFilePath = raw_input("input configparser.tar file path:")
+    os.system("mkdir /tmp/python")
+    os.system("tar xvf " + tarFilePath + " -C /tmp/python")
+
     #six
     os.system("cd /tmp/python/six*/ && python setup.py install")
 
