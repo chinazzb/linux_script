@@ -52,11 +52,13 @@ class system:
 
     @staticmethod
     def firewalld():
+        print("starting configure system firewalld......................................")
         openPortList = cf.get("system","openPort")
         openPortListSplit = str(openPortList).split(" ")
         #Centos Redhat
         if 'Centos' in systemType or 'Redhat' in systemType:
             os.system("systemctl start firewalld")
+            os.system("systemctl enable firewalld")
             for i in range(len(openPortListSplit)):
                 os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp ")
             os.system("firewall-cmd --reload")
@@ -66,12 +68,14 @@ class system:
             os.system("rcSuSEfirewall2 start")
             os.system("chkconfig SuSEfirewall2_init on")
             os.system("chkconfig SuSEfirewall2_setup on")
+        print("configure system firewalld done..................................")
 
 
 
 class nginxConfig:
     @staticmethod
     def makeNginx():
+        print("starting make nginx ............................................")
         nginxInstllPath = cf.get("nginx","installPath")
         os.system("rm -rf " + nginxInstllPath)
         checkConfigure = os.system("cd " + tmpPath +"/nginx-* && ./configure --user=nginx --group=nginx"
@@ -81,10 +85,14 @@ class nginxConfig:
         if 0 != checkConfigure:
             print("configure nginx fatal error.................................")
             os._exit(10)
+
         checkMake = os.system("cd " + tmpPath + "/nginx*/ && make && make install")
         if 0 != checkMake:
             print("make nginx fatal error.......................................")
             os._exit(11)
+
+        print("starting make nginx ............................................")
+
 
     @staticmethod
     def optimization():
@@ -92,7 +100,6 @@ class nginxConfig:
         time.sleep(3)
         nginxInstall = cf.get("nginx","installPath")
         nginxConfigPath= nginxInstall+"/conf"
-        print("optimization nginx done.....................")
 
         #soft link
         print("create soft link nginx ........................")
@@ -145,8 +152,9 @@ class nginxConfig:
             replace(nginxConfigPath,"largecash",projectTypeList)
         else:
             print("目前只允许填写单个项目,此项不做操作，继续允许下一步.请手动配置")
-        print("configure nginx upstream project type done..................")
+        print("configure nginx upstream project type done.......................")
 
+        print("optimization nginx done................................")
 
 #replace file string
 def replace(file_path, old_str, new_str):

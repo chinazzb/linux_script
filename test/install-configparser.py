@@ -8,12 +8,19 @@
 
 
 import os
+import gzip
 
 def depend():
     #tar file
-    tarFilePath = raw_input("input configparser.tar file path:")
-    os.system("mkdir /tmp/python")
+    while True:
+        tarFilePath = raw_input("input configparser.tar file path:")
+        checkTarFile = os.path.exists(tarFilePath)
+        if checkTarFile:
+            break
+    os.system("rm -rf /tmp/python")
+    os.system("mkdir -p /tmp/python")
     os.system("tar xvf " + tarFilePath + " -C /tmp/python")
+    os.system("cd /tmp/python  && unzip setuptools* ")
 
     #six
     os.system("cd /tmp/python/six*/ && python setup.py install")
