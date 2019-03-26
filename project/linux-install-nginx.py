@@ -88,43 +88,43 @@ class nginxConfig:
 
     @staticmethod
     def optimization():
-        # print("start optimization nginx .........................")
-        # time.sleep(3)
+        print("start optimization nginx .........................")
+        time.sleep(3)
         nginxInstall = cf.get("nginx","installPath")
         nginxConfigPath= nginxInstall+"/conf"
-        # print("start optimization nginx done.....................")
-        #
-        # #soft link
-        # print("create soft link nginx ........................")
-        # time.sleep(2)
-        # os.system("rm -f /etc/nginx")
-        # os.system("ln -s " + nginxConfigPath + " /etc/nginx")
-        # os.system("rm -rf " + nginxConfigPath + "/nginx.conf && cp " + tmpPath + "/nginx.conf " + nginxConfigPath)
-        # print("create soft link nginx done ....................")
-        #
-        # #nginx port
-        # print("configure nginx port .........................")
-        # time.sleep(2)
-        # port = cf.get("nginx","port")
-        # port = "listen " + port
-        # replace(nginxConfigPath + "/nginx.conf","listen 80",port)
-        # print("configure nginx port done.....................")
-        #
-        #
-        # #worker_processes
-        # print("configure nginx worker_processes .........................")
-        # time.sleep(2)
-        # worker_processes = cf.get("nginx","worker_processes")
-        # replace(nginxConfigPath + "/nginx.conf" ,"worker_processes 2","worker_processes " + worker_processes)
-        # print("configure nginx worker_processes done.....................")
-        #
-        #
-        # #worker_connections
-        # print("configure nginx worker_connections .....................")
-        # time.sleep(2)
-        # worker_connections = cf.get("nginx","worker_connections")
-        # replace(nginxConfigPath + "/nginx.conf","worker_connections  1024","worker_connections " + worker_connections)
-        # print("configure nginx worker_connections done.....................")
+        print("optimization nginx done.....................")
+
+        #soft link
+        print("create soft link nginx ........................")
+        time.sleep(2)
+        os.system("rm -f /etc/nginx")
+        os.system("ln -s " + nginxConfigPath + " /etc/nginx")
+        os.system("rm -rf " + nginxConfigPath + "/nginx.conf && cp " + tmpPath + "/nginx.conf " + nginxConfigPath)
+        print("create soft link nginx done ....................")
+
+        #nginx port
+        print("configure nginx port .........................")
+        time.sleep(2)
+        port = cf.get("nginx","port")
+        port = "listen " + port
+        replace(nginxConfigPath + "/nginx.conf","listen 80",port)
+        print("configure nginx port done.....................")
+
+
+        #worker_processes
+        print("configure nginx worker_processes .........................")
+        time.sleep(2)
+        worker_processes = cf.get("nginx","worker_processes")
+        replace(nginxConfigPath + "/nginx.conf" ,"worker_processes 2","worker_processes " + worker_processes)
+        print("configure nginx worker_processes done.....................")
+
+
+        #worker_connections
+        print("configure nginx worker_connections .....................")
+        time.sleep(2)
+        worker_connections = cf.get("nginx","worker_connections")
+        replace(nginxConfigPath + "/nginx.conf","worker_connections  1024","worker_connections " + worker_connections)
+        print("configure nginx worker_connections done.....................")
 
 
         #proxy tomcat
@@ -136,16 +136,16 @@ class nginxConfig:
             os.system("sed -i '44a\ \tserver " + proxyTomcatListSplit[i] + ";' " + nginxConfigPath + "/nginx.conf")
         print("configure nginx upstream server done .................")
 
-        # #project type
-        # print("configure nginx upstream project type .....................")
-        # time.sleep(2)
-        # projectTypeList = cf.get("project","projectType")
-        # projectTypeListSplit = str(projectTypeList).split(",")
-        # if 1 == len(projectTypeListSplit):
-        #     replace(nginxConfigPath,"largecash",projectTypeList)
-        # else:
-        #     print("目前只允许填写单个项目,此项不做操作，继续允许下一步.请手动配置")
-        # print("configure nginx upstream project type done..................")
+        #project type
+        print("configure nginx upstream project type .....................")
+        time.sleep(2)
+        projectTypeList = cf.get("project","projectType")
+        projectTypeListSplit = str(projectTypeList).split(",")
+        if 1 == len(projectTypeListSplit):
+            replace(nginxConfigPath,"largecash",projectTypeList)
+        else:
+            print("目前只允许填写单个项目,此项不做操作，继续允许下一步.请手动配置")
+        print("configure nginx upstream project type done..................")
 
 
 #replace file string
