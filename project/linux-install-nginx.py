@@ -46,9 +46,9 @@ class system:
 
     @staticmethod
     def tarNginx():
-        os.system("rm -rf " + tmpPath + " && mkdir " +tmpPath)
+        os.system("rm -rf " + tmpPath + " && mkdir " + tmpPath)
         os.system("tar xvf " + tarFilePath + " -C " + tmpPath)
-        os.system("for i in " + tmpPath + "/*.tar.gz;do tar zxvf $i -C " + tmpPath +";done")
+        os.system("for i in " + tmpPath + "/nginx/*.tar.gz;do tar zxvf $i -C " + tmpPath +";done")
 
     @staticmethod
     def firewalld():

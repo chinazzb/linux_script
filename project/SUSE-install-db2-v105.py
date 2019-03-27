@@ -15,6 +15,7 @@ import os
 
 class system:
     @staticmethod
+    #libaio Centos
     def zypper():
         checkzypper = os.system("zypper install -y gcc gcc-c++ kernel-source pam-32bit glibc-locale-32bit libstdc-32bit")
         if 0!= checkzypper:
