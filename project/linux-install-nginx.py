@@ -106,8 +106,22 @@ class nginxConfig:
         time.sleep(2)
         os.system("rm -f /etc/nginx")
         os.system("ln -s " + nginxConfigPath + " /etc/nginx")
-        os.system("rm -rf " + nginxConfigPath + "/nginx.conf && cp " + tmpPath + "/nginx.conf " + nginxConfigPath)
+        os.system("rm -rf " + nginxConfigPath + "/nginx.conf ")
+        os.system("cp " + tmpPath + "/nginx/nginx.conf " + nginxConfigPath)
         print("create soft link nginx done ....................")
+
+
+        #nginx init.d
+        print("create nginx init.d............................")
+        time.sleep(2)
+        if "Centos" in systemType or 'Redhat'in systemType:
+            os.system("mv " + tmpPath + "/nginx/nginx /etc/init.d/")
+        elif "SUSE" in systemType:
+            os.system("mv " + tmpPath + "/nginx/nginx.suse /etc/init.d/nginx")
+        os.system("chmod 755 /etc/init.d/nginx")
+        os.system("chkconfig nginx on")
+        print("nginx init.d done............................")
+
 
         #nginx port
         print("configure nginx port .........................")

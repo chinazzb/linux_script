@@ -210,7 +210,8 @@ class software:
 
     @staticmethod
     def enable_tomcat():
-        os.system("cp " + tomcatTmpPath + "/tomcat-apr/tomcat /etc/init.d/tomcat && chmod 755 /etc/init.d/tomcat")
+        os.system("cp " + tomcatTmpPath + "/tomcat-apr/tomcat /etc/init.d/tomcat")
+        os.system("chmod 755 /etc/init.d/tomcat")
         os.system("chkconfig tomcat on")
         time.sleep(6)
         print("完成tomcat自启动...........................................................")
