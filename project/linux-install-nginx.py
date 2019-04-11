@@ -42,7 +42,8 @@ class system:
 
     @staticmethod
     def createUserGroup():
-        os.system("groupadd nginx && useradd -g web -s /bin/false nginx")
+        os.system("groupadd nginx")
+        os.system("useradd -g nginx -s /bin/false nginx")
 
     @staticmethod
     def tarNginx():
