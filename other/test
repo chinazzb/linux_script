@@ -1,0 +1,10 @@
+echo
+ echo -e "\t\t\tinstall software\n"
+ echo -e "\t1. first install python configparser"
+ echo -e "\t2. install nginx"
+ echo -e "\t3. install tomcat"
+ echo -e "\t4. install db2v10.5"
+ echo -e "\t5. install mysql"
+ echo -e "\t0. Exit menu\n\n"
+ echo -en "\tEnter an option: "
+ read -n 1 option

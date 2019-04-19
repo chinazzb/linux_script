@@ -22,22 +22,26 @@ tomcatTmpPath = cf.get("tomcat","tmpPath")
 tomcatApr = tomcatTmpPath + "/tomcat-apr"
 tomcatInstallPath = cf.get("tomcat","installPath")
 jdkInstallPath = cf.get("java","installPath")
-systemType = cf.get("system","system_type")
+systemType = cf.get("system","systemType")
 
 
 class system:
 
     @staticmethod
-    def install_gcc():
+    def basis():
+        hostName = cf.get("system","hostName")
         check = 1
+        print(systemType + " system.................................")
         if 'Centos' in systemType or 'Redhat'in systemType:
-            print(systemType + " system.................................")
             time.sleep(3)
             check = os.system("yum install -y gcc gcc-c++ bzip2")
+            #modify host name
+            os.system("echo " + hostName + "> /etc/hostname")
         elif 'SUSE' in systemType:
-            print(systemType + " system.................................")
             time.sleep(3)
             check = os.system("zypper install -y gcc gcc-c++")
+            os.system("echo " + hostName + "> /etc/HOSTNAME")
+            os.system("sysctl -w kernel.hostname=" + hostName)
 
         if 0 != check:
             print("请检查zypp源 or yum源 是否正常使用")
@@ -115,7 +119,7 @@ class software:
         #make
         print("开始编译apr............................................................")
         time.sleep(3)
-        checkApr = os.system("cd " + tomcatTmpPath + "/apr-* && ./configure --prefix=/usr/local/apr/ && make && make install")
+        checkApr = os.system("cd " + tomcatTmpPath + "/apr-* && ./configure --prefix=/usr/local/apr/ && make && make install > /dev/null")
         if 0 != checkApr:
             print("编译apr失败请检查相对应文件")
             os._exit(11)
@@ -126,7 +130,7 @@ class software:
         print("开始编译apr-iconv.......................................................")
         time.sleep(3)
         checkAprIconv = os.system("cd "+ tomcatTmpPath + "/apr-iconv* && ./configure --prefix=/usr/local/apr-iconv/ "
-                                                         "--with-apr=/usr/local/apr && make && make install")
+                                                         "--with-apr=/usr/local/apr && make && make install  > /dev/null")
         if 0 != checkAprIconv:
             print("编译apr-iconv失败请检查相对应文件")
             os._exit(12)
@@ -136,7 +140,7 @@ class software:
     def make_expat():
         print("开始编译expat..........................................................")
         time.sleep(3)
-        checkExpat = os.system("cd " + tomcatTmpPath + "/expat* && ./configure --prefix=/usr/local/expat && make && make install ")
+        checkExpat = os.system("cd " + tomcatTmpPath + "/expat* && ./configure --prefix=/usr/local/expat && make && make install > /dev/null")
         if 0 != checkExpat:
             print("编译expat文件失败请检查依赖项")
             os._exit(13)
@@ -148,7 +152,7 @@ class software:
         time.sleep(3)
         checkAprUtil = os.system("cd " + tomcatTmpPath + "/apr-util* && ./configure --prefix=/usr/local/apr-util"
                                                          " --with-apr=/usr/local/apr --with-apr-iconv=/usr/local/apr-iconv/bin/apriconv"
-                                                         " --with-expat=/usr/local/expat && make && make install")
+                                                         " --with-expat=/usr/local/expat && make && make install  > /dev/null")
         if 0 != checkAprUtil:
             print("编译apr-util失败请检查相对应文件")
             os._exit(14)
@@ -162,7 +166,7 @@ class software:
         os.system("groupadd web && useradd -g web -s /bin/false -M tomcat")
         checkTomcatNative = os.system("cd " + tomcatTmpPath + "/apache-tomcat-*/bin/ && tar zxvf tomcat-native.tar.gz && "
                                       "cd tomcat-native-*/native && ./configure --with-apr=/usr/local/apr/bin/apr-1-config "
-                                      "--with-java-home=" + jdkHome + " && make && make install")
+                                      "--with-java-home=" + jdkHome + " && make && make install  > /dev/null")
         if 0 != checkTomcatNative:
             print("TomcatNative编译失败，请检查对应路径")
             os._exit(14)
@@ -203,7 +207,7 @@ class software:
 
         #tomcat manager
         os.system("rm -rf " + tomcatProject)
-        os.system(" mv  " + tomcatTmpPath + "/tomcat-apr/manager/ " + tomcatProject)
+        os.system("cp -r" + tomcatTmpPath + "/tomcat-apr/manager/ " + tomcatProject)
         os.system("chown -hR tomcat:web {/usr/local/apache-tomcat*," + tomcatInstallPath + "}" )
 
         print("tomcat optimization done...........................................................")
@@ -233,7 +237,7 @@ def replace(file_path, old_str, new_str):
 
 def integeration():
     #system
-    system.install_gcc()
+    system.basis()
     system.tarz_tomcat()
     system.jdk_configure()
 

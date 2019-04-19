@@ -21,24 +21,31 @@ cf.read(confFilePath,encoding="utf-8-sig")
 
 tarFilePath = cf.get("nginx","tarFilePath")
 tmpPath = cf.get("nginx","tmpPath")
-systemType = cf.get("system","system_type")
+systemType = cf.get("system","systemType")
 
 class system:
     @staticmethod
-    def install_gcc():
+    def basis():
+        hostName = cf.get("system","hostName")
         check = 1
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
             check = os.system("yum install -y gcc gcc-c++")
+            #modify host name
+            os.system("echo " + hostName + "> /etc/hostname")
+
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
             check = os.system("zypper install -y gcc gcc-c++")
+            #modify host name
+            os.system("echo " + hostName + "> /etc/HOSTNAME")
+            os.system("sysctl -w kernel.hostname=" + hostName)
 
         if 0 != check:
-            print("请检查zypp源 or yum源 是否正常使用")
-            os._exit(3)
+                print("请检查zypp源 or yum源 是否正常使用")
+                os._exit(3)
 
     @staticmethod
     def createUserGroup():
@@ -87,7 +94,7 @@ class nginxConfig:
             print("configure nginx fatal error.................................")
             os._exit(10)
 
-        checkMake = os.system("cd " + tmpPath + "/nginx*/ && make && make install")
+        checkMake = os.system("cd " + tmpPath + "/nginx*/ && make && make install  > /dev/null")
         if 0 != checkMake:
             print("make nginx fatal error.......................................")
             os._exit(11)
@@ -187,7 +194,7 @@ def replace(file_path, old_str, new_str):
 
 
 def integeration():
-    system.install_gcc()
+    system.basis()
     system.createUserGroup()
     system.tarNginx()
     system.firewalld()

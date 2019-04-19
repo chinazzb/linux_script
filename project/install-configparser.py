@@ -8,13 +8,13 @@
 
 
 import os
-import gzip
+import sys
 
 def depend():
     #tar file
     os.system("yum install -y unzip")
     while True:
-        tarFilePath = raw_input("input configparser.tar file path:")
+        tarFilePath = sys.argv[1]
         checkTarFile = os.path.exists(tarFilePath)
         if checkTarFile:
             break

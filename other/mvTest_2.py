@@ -6,16 +6,20 @@
 
 import os
 import shutil
+import string
+import configparser
+cf = configparser.ConfigParser()
+confFilePath = "../test/fileOperating.conf"
+cf.read(confFilePath,encoding="utf-8-sig")
 
 #移动文件 move file
-outPutFile = open("E:\\testDir\\move.log","w+")
-errorMessage =""
-try:
-    shutil.move("E:\\testDir\\123.txt","E:\\back")
-except shutil.Error as shutilError:
-    errorMessage = str(shutilError)
-except BaseException as allError:
-    errorMessage = str(allError)
-finally:
-    outPutFile.write( errorMessage +"\n")
-    outPutFile.close()
+a ="2312_20180401.FSN"
+b ="2312_20190402.zip"
+c ="2312_20190402.rar"
+d =""
+
+fileDateList = cf.get("filter","fileDate")
+fileDateListSplit= str(fileDateList).split(",")
+fileSuffix =""
+
+print(string.rfind(a,fileDateListSplit) !=-1)

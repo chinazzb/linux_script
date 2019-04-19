@@ -9,9 +9,9 @@ import shutil
 
 
 #寻找最终目录下的文件  find finally dir inside files
-def move_file(oldPath,newPath):
+def move_file(oldPath,newPath,logPath):
     errorMessage = ""
-    outPutFile = open("mvFile.log",'w+')
+    outPutFile = open(logPath,'w+')
     for root, dirs, files in os.walk(oldPath, topdown=False):
         for name in files:
             pathName = (os.path.join(root,name))
@@ -29,6 +29,7 @@ if __name__ == '__main__':
     #fsn文件路径(只需要一个主目录即可)
     oldPath = "F:\\Test"
     newPath = "E:\\testDir"
+    logPath = ""
     if os.path.exists(oldPath) and os.path.exists(newPath):
-        move_file(oldPath,newPath)
+        move_file(oldPath,newPath,logPath)
 
