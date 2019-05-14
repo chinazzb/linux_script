@@ -31,14 +31,14 @@ class system:
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("yum install -y gcc gcc-c++")
+            check = os.system("yum install -y gcc gcc-c++ > /dev/null 2>&1")
             #modify host name
             os.system("echo " + hostName + "> /etc/hostname")
 
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++")
+            check = os.system("zypper install -y gcc gcc-c++ /dev/null 2>&1")
             #modify host name
             os.system("echo " + hostName + "> /etc/HOSTNAME")
             os.system("sysctl -w kernel.hostname=" + hostName)
@@ -55,8 +55,8 @@ class system:
     @staticmethod
     def tarNginx():
         os.system("rm -rf " + tmpPath + " && mkdir " + tmpPath)
-        os.system("tar xvf " + tarFilePath + " -C " + tmpPath)
-        os.system("for i in " + tmpPath + "/nginx/*.tar.gz;do tar zxvf $i -C " + tmpPath +";done")
+        os.system("tar xvf " + tarFilePath + " -C " + tmpPath + " > /dev/null 2>&1")
+        os.system("for i in " + tmpPath + "/nginx/*.tar.gz;do tar zxvf $i -C " + tmpPath +" > /dev/null 2>&1 ;done")
 
     @staticmethod
     def firewalld():
@@ -87,14 +87,18 @@ class nginxConfig:
         nginxInstllPath = cf.get("nginx","installPath")
         os.system("rm -rf " + nginxInstllPath)
         checkConfigure = os.system("cd " + tmpPath +"/nginx-* && ./configure --user=nginx --group=nginx"
-                                                    " --prefix=" + nginxInstllPath + " --with-stream"
+                                                    " --prefix=" + nginxInstllPath +
+                                                    " --with-stream"
                                                     " --with-pcre=" + tmpPath + "/pcre-8.41"
-                                                    " --with-zlib=" + tmpPath + "/zlib-1.2.11")
+                                                    " --with-zlib=" + tmpPath + "/zlib-1.2.11 > /dev/null 2>&1")
         if 0 != checkConfigure:
             print("configure nginx fatal error.................................")
             os._exit(10)
 
-        checkMake = os.system("cd " + tmpPath + "/nginx*/ && make && make install  > /dev/null")
+        checkMake = os.system("cd " + tmpPath + "/nginx*/ "
+                                                " && make > /dev/null 2>&1"
+                                                " && make install  > /dev/null 2>&1")
+
         if 0 != checkMake:
             print("make nginx fatal error.......................................")
             os._exit(11)
@@ -171,7 +175,7 @@ class nginxConfig:
         projectTypeList = cf.get("project","projectType")
         projectTypeListSplit = str(projectTypeList).split(",")
         if 1 == len(projectTypeListSplit):
-            replace(nginxConfigPath,"largecash",projectTypeList)
+            replace(nginxConfigPath+"/nginx.conf","largecash",projectTypeList)
         else:
             print("目前只允许填写单个项目,此项不做操作，继续允许下一步.请手动配置")
         print("configure nginx upstream project type done.......................")

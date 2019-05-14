@@ -28,14 +28,14 @@ class system:
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("yum install -y gcc gcc-c++")
+            check = os.system("yum install -y gcc gcc-c++ >/dev/null 2>&1")
             #modify host name
             os.system("echo " + hostName + "> /etc/hostname")
 
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++")
+            check = os.system("zypper install -y gcc gcc-c++ >/dev/null 2>&1")
             #modify host name
             os.system("echo " + hostName + "> /etc/HOSTNAME")
             os.system\
@@ -53,7 +53,7 @@ class system:
             os.system("systemctl start firewalld")
             os.system("systemctl enable firewalld")
             for i in range(len(openPortListSplit)):
-                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp ")
+                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp >/dev/null 2>&1")
             os.system("firewall-cmd --reload")
         elif 'SUSE' in systemType:
             firewallFile ="/etc/sysconfig/SuSEfirewall2"
@@ -83,7 +83,7 @@ class mysql:
         tarFilePath = cf.get("mysql","tarFilePath")
         check = 0
         os.system("rm -rf " + installPath)
-        check = os.system("tar zxvf " +tarFilePath+ " -C /usr/local/ > /dev/null")
+        check = os.system("tar zxvf " +tarFilePath+ " -C /usr/local/ > /dev/null 2>&1")
         os.system("ln -s /usr/local/mariadb-10.3.14-linux-x86_64 " + installPath)
 
         print("done unpack mariadb tarball ...........................")
