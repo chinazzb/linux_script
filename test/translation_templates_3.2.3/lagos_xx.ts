@@ -1081,7 +1081,7 @@ servers will not be cleared.</source>
     </message>
     <message>
         <source>Channel</source>
-        <translation>更新日志</translation>
+        <translation>频道</translation>
     </message>
     <message>
         <source>Channel Group</source>
@@ -3827,15 +3827,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Deactivate Whisperlist</source>
-        <translation type="unfinished">停用私聊列表</translation>
+        <translation>停用私聊列表</translation>
     </message>
     <message>
         <source>Activate Reply to a Whisper</source>
-        <translation type="unfinished">激活私聊的回复</translation>
+        <translation>激活私聊的回复</translation>
     </message>
     <message>
         <source>Deactivate Reply to a Whisper</source>
-        <translation type="unfinished"></translation>
+        <translation>停用对私聊的回复</translation>
     </message>
     <message>
         <source>Activate Block Incoming Whispers</source>
@@ -3843,39 +3843,39 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Deactivate Block Incoming Whispers</source>
-        <translation type="unfinished">激活阻止发送的私聊</translation>
+        <translation>激活阻止发送的私聊</translation>
     </message>
     <message>
         <source>Toggle Block Incoming Whispers</source>
-        <translation type="unfinished">切换阻止发送的私聊</translation>
+        <translation>切换阻止发送的私聊</translation>
     </message>
     <message>
         <source>Start Recording</source>
-        <translation type="unfinished">开始记录</translation>
+        <translation>开始记录</translation>
     </message>
     <message>
         <source>Stop Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>停止录制</translation>
     </message>
     <message>
         <source>Increase Master Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>增加主音量</translation>
     </message>
     <message>
         <source>Decrease Master Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>减少主音量</translation>
     </message>
     <message>
         <source>Activate Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>激活插件</translation>
     </message>
     <message>
         <source>Deactivate Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>停用插件</translation>
     </message>
     <message>
         <source>Toggle Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>切换插件</translation>
     </message>
     <message>
         <source>Run Plugin Command</source>
@@ -3883,11 +3883,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Plugin Hotkey</source>
-        <translation type="unfinished">插件热键</translation>
+        <translation>插件热键</translation>
     </message>
     <message>
         <source>Stylesheet Helper</source>
-        <translation type="unfinished">样式表帮助</translation>
+        <translation>样式表帮助</translation>
     </message>
     <message>
         <source>Activate 3D Sound</source>
@@ -3895,43 +3895,43 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Deactivate 3D Sound</source>
-        <translation type="unfinished">停用3D声音</translation>
+        <translation>停用3D声音</translation>
     </message>
     <message>
         <source>Toggle 3D Sound</source>
-        <translation type="unfinished">切换3D声音</translation>
+        <translation>切换3D声音</translation>
     </message>
     <message>
         <source>Change Nickname</source>
-        <translation type="unfinished">更改昵称</translation>
+        <translation>更改昵称</translation>
     </message>
     <message>
         <source>----- Misc -----</source>
-        <translation type="unfinished">----- 杂项 -----</translation>
+        <translation>----- 杂项 -----</translation>
     </message>
     <message>
         <source>Grant Next User Talk Power</source>
-        <translation type="unfinished">授权下一个用户谈话权限</translation>
+        <translation>授权下一个用户谈话权限</translation>
     </message>
     <message>
         <source>Request Talk Power</source>
-        <translation type="unfinished">请求谈话权限</translation>
+        <translation>请求谈话权限</translation>
     </message>
     <message>
         <source>Revoke All And Grant Next User Talk Power</source>
-        <translation type="unfinished">撤销所有并授予下一个用户谈话权力</translation>
+        <translation>撤销所有并授予下一个用户谈话权力</translation>
     </message>
     <message>
         <source>Open Filebrowser on Channel</source>
-        <translation type="unfinished">在频道上打开文件浏览器</translation>
+        <translation>在频道上打开文件浏览器</translation>
     </message>
     <message>
         <source>Disable Autoconnect</source>
-        <translation type="unfinished">禁用自动连接</translation>
+        <translation>禁用自动连接</translation>
     </message>
     <message>
         <source>Reload Skin</source>
-        <translation type="unfinished">重新加载皮肤</translation>
+        <translation>重新加载皮肤</translation>
     </message>
     <message>
         <source>Bring Client to Front</source>
@@ -3991,7 +3991,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Would you like to add %1 for &quot;%2&quot; as well?</source>
-        <translation></translation>
+        <translation>你想为“%2”添加%1吗？</translation>
     </message>
     <message>
         <source>an &quot;&lt;strong&gt;Up-Key&lt;/strong&gt;&quot;</source>
@@ -4055,51 +4055,51 @@ p, li { white-space: pre-wrap; }
     <name>HotkeyMsgDialog</name>
     <message>
         <source>Inserting Hotkey...</source>
-        <translation type="unfinished"></translation>
+        <translation>插入热键...</translation>
     </message>
     <message>
         <source>Deleting Hotkey...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在删除热键...</translation>
     </message>
     <message>
         <source>inserted</source>
-        <translation type="unfinished"></translation>
+        <translation>已经插入</translation>
     </message>
     <message>
         <source>deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>已经删除</translation>
     </message>
     <message>
         <source>Please choose where the Hotkey should be %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择热键应该位于%1.</translation>
     </message>
     <message>
         <source>Note that existing Hotkeys will be overwritten.</source>
-        <translation type="unfinished"></translation>
+        <translation>注意，现有的热键将被覆盖.</translation>
     </message>
     <message>
         <source>Warning, the Hotkey [ %1 ] already used.</source>
-        <translation type="unfinished"></translation>
+        <translation>警告热键已在使用[ %1 ].</translation>
     </message>
     <message>
         <source>Please choose another Hotkey.</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择另一个热键.</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>所有</translation>
     </message>
     <message>
         <source>Insert</source>
-        <translation type="unfinished"></translation>
+        <translation>插入</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>%1 Hotkey in Hotkey Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>热键配置文件中的%1热键</translation>
     </message>
 </context>
 <context>
@@ -4107,37 +4107,38 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Press hotkey combination.
 (ESC to cancel or to clear the hotkey)</source>
-        <translation type="unfinished"></translation>
+        <translation>按热键组合。
+(ESC取消或清除热键)</translation>
     </message>
     <message>
         <source>No Hotkey Assigned</source>
-        <translation type="unfinished"></translation>
+        <translation>没有热键的分配</translation>
     </message>
 </context>
 <context>
     <name>HotkeySetup</name>
     <message>
         <source>Push-To-Whisper</source>
-        <translation type="unfinished"></translation>
+        <translation>按键私聊</translation>
     </message>
     <message>
         <source>Push-To-Whisper-Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>按键回复私聊</translation>
     </message>
     <message>
         <source>Push-to-Talk</source>
-        <translation type="unfinished"></translation>
+        <translation>按键通话</translation>
     </message>
 </context>
 <context>
     <name>HotkeyTableWidget</name>
     <message>
         <source>Edit Hotkey</source>
-        <translation type="unfinished"></translation>
+        <translation>修改热键</translation>
     </message>
     <message>
         <source>Delete Hotkey</source>
-        <translation type="unfinished"></translation>
+        <translation>删除热键</translation>
     </message>
 </context>
 <context>
@@ -4145,377 +4146,388 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Profile Details</source>
         <comment>Dummy text, no need to translate</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Hotkey</source>
-        <translation type="unfinished"></translation>
+        <translation>热键</translation>
     </message>
     <message>
         <source>Action</source>
-        <translation type="unfinished"></translation>
+        <translation>行动</translation>
     </message>
     <message>
         <source>Add hotkey</source>
-        <translation type="unfinished"></translation>
+        <translation>新增热键</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;添加</translation>
     </message>
     <message>
         <source>Remove selected hotkey</source>
-        <translation type="unfinished"></translation>
+        <translation>删除下选中的热键</translation>
     </message>
     <message>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;移除</translation>
     </message>
     <message>
         <source>Edit selected hotkey</source>
-        <translation type="unfinished"></translation>
+        <translation>修改选中的热键</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;编辑</translation>
     </message>
     <message>
         <source>Hotkey System</source>
-        <translation type="unfinished"></translation>
+        <translation>热键系统</translation>
     </message>
     <message>
         <source>Hotkeys</source>
-        <translation type="unfinished"></translation>
+        <translation>热键</translation>
     </message>
     <message>
         <source>Configure Hotkeys</source>
-        <translation type="unfinished"></translation>
+        <translation>配置热键</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认</translation>
     </message>
     <message>
         <source>Keyboard &amp; Mouse Only</source>
-        <translation type="unfinished"></translation>
+        <translation>使用键盘和鼠标</translation>
     </message>
     <message>
         <source>(Keyboard &amp; Mouse only)</source>
-        <translation type="unfinished"></translation>
+        <translation>(使用键盘和鼠标)</translation>
     </message>
     <message>
         <source>(Default only)</source>
-        <translation type="unfinished"></translation>
+        <translation>(默认)</translation>
     </message>
     <message>
         <source>Switch to Next Channel (Global)</source>
-        <translation type="unfinished"></translation>
+        <translation>切换到下一个频道(全局)</translation>
     </message>
     <message>
         <source>Invalid or broken event</source>
-        <translation type="unfinished"></translation>
+        <translation>行动无效或损坏</translation>
     </message>
     <message>
         <source>Push-To-Talk (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>按键通话(%1)</translation>
     </message>
     <message>
         <source>Push-To-Talk (All)</source>
-        <translation type="unfinished"></translation>
+        <translation>设置所有为按键通话</translation>
     </message>
     <message>
         <source>Invalid or broken action</source>
-        <translation type="unfinished"></translation>
+        <translation>无效或中断动作</translation>
     </message>
     <message>
         <source> on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>在%1上</translation>
     </message>
     <message>
         <source>(Down)</source>
-        <translation type="unfinished"></translation>
+        <translation>(下)</translation>
     </message>
     <message>
         <source>(Up)</source>
-        <translation type="unfinished"></translation>
+        <translation>(上)</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>信息</translation>
     </message>
     <message>
         <source>To be able to use hotkeys on Mac, you need to open the System preferences
 &quot;Security &amp; Privacy&quot; page, select tab &quot;Privacy&quot;, select &quot;Accessibility&quot;
 and check &quot;TeamSpeak 3 Client&quot;. If it does not exist in the list, drag&amp;drop
 it from your Applications folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>To be able to use hotkeys on Mac, you need to open the System preferences
+&quot;Security &amp; Privacy&quot; page, select tab &quot;Privacy&quot;, select &quot;Accessibility&quot;
+and check &quot;TeamSpeak 3 Client&quot;. If it does not exist in the list, drag&amp;drop
+it from your Applications folder.</translation>
     </message>
     <message>
         <source>To be able to use hotkeys on Mac, you need to open the System preferences
 &quot;Universal Access&quot; page and make sure &quot;Enable access for assistive devices&quot;
 is turned on.</source>
-        <translation type="unfinished"></translation>
+        <translation>要在Mac上使用热键，需要打开系统首选项
+“通用访问”页面，并确保“为辅助设备启用访问”
+是打开的。</translation>
     </message>
     <message>
         <source>Delete Hotkeys...</source>
-        <translation type="unfinished"></translation>
+        <translation>删除热键…</translation>
     </message>
     <message>
         <source>Hotkey Profile &lt;strong&gt;&quot;%1&quot;&lt;/strong&gt; has been deleted.&lt;p&gt;Do you want to delete every Hotkey assigned to this profile as well?&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>热键配置文件&lt;strong&gt;“%1”&lt;/strong&gt;已被删除。&lt;p&gt;是否要删除分配给此配置文件的每个热键？&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>确认</translation>
     </message>
     <message>
         <source>Your selection contains at least one autogenerated pair.
 Proceeding will also delete the combined key as well!
 
 Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>您的选择至少包含一个自动生成的对。
+进程还将删除组合键以及!
+
+你想继续吗?</translation>
     </message>
 </context>
 <context>
     <name>IconViewer</name>
     <message>
         <source>Icons</source>
-        <translation type="unfinished"></translation>
+        <translation>图标</translation>
     </message>
     <message>
         <source>Remote</source>
-        <translation type="unfinished"></translation>
+        <translation>远端</translation>
     </message>
     <message>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>上传</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>Local</source>
-        <translation type="unfinished"></translation>
+        <translation>本地</translation>
     </message>
     <message>
         <source>Icon Pack:</source>
-        <translation type="unfinished"></translation>
+        <translation>图标包:</translation>
     </message>
     <message>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>重新加载</translation>
     </message>
     <message>
         <source>default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Invalid image selected.
 Failed to upload icon.</source>
-        <translation type="unfinished"></translation>
+        <translation>选择的图片无效
+无法上传图标</translation>
     </message>
     <message>
         <source>Selected icon file is too large.
 The maximum allowed file size is %1 kB.</source>
-        <translation type="unfinished"></translation>
+        <translation>选中的图标文件太大。
+允许的最大文件大小为%1 kB。</translation>
     </message>
     <message>
         <source>Select one or more images to upload</source>
-        <translation type="unfinished"></translation>
+        <translation>选择一个或多个要上传的图像</translation>
     </message>
 </context>
 <context>
     <name>IdentityDialog</name>
     <message>
         <source>Identities[*]</source>
-        <translation type="unfinished"></translation>
+        <translation>身份</translation>
     </message>
     <message>
         <source>myTeamSpeak Identities</source>
-        <translation type="unfinished"></translation>
+        <translation>myTeamSpeak身份</translation>
     </message>
     <message>
         <source>Synchronized Identities</source>
-        <translation type="unfinished"></translation>
+        <translation>同步身份</translation>
     </message>
     <message>
         <source>Local Identities</source>
-        <translation type="unfinished"></translation>
+        <translation>本地身份</translation>
     </message>
     <message>
         <source>&amp;Identity Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;身份名称:</translation>
     </message>
     <message>
         <source>&amp;Nickname:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;昵称：</translation>
     </message>
     <message>
         <source>&amp;Phonetic Nickname:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;拼音昵称：</translation>
     </message>
     <message>
         <source>Your nickname written as phonemes (optional)</source>
-        <translation type="unfinished"></translation>
+        <translation>你的昵称写成音素（可选）</translation>
     </message>
     <message>
         <source>&amp;Unique ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;唯一身份：</translation>
     </message>
     <message>
         <source>Security Level:</source>
-        <translation type="unfinished"></translation>
+        <translation>安全等级：</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Improve</source>
-        <translation type="unfinished"></translation>
+        <translation>提高</translation>
     </message>
     <message>
         <source>Add Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>添加身份</translation>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished"></translation>
+        <translation>创建</translation>
     </message>
     <message>
         <source>Remove Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>移除身份</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>移除</translation>
     </message>
     <message>
         <source>Set Default Identity</source>
-        <translation type="unfinished"></translation>
+        <translation>修改默认身份</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认</translation>
     </message>
 </context>
 <context>
     <name>IdentityQualityWidget</name>
     <message>
         <source>Identity Security Level</source>
-        <translation type="unfinished"></translation>
+        <translation>身份安全等级</translation>
     </message>
     <message>
         <source>&lt;span style=&quot;color:red;&quot;&gt;Insufficient identity security level for this server.&lt;br&gt;
 You need to improve your identity security level.&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&quot;color:red;&quot;&gt;此服务器的身份安全级别不足。&lt;br&gt;
+您需要提高身份安全级别。&lt;/span&gt;</translation>
     </message>
     <message>
         <source>Identity:</source>
-        <translation type="unfinished"></translation>
+        <translation>名称：</translation>
     </message>
     <message>
         <source>Current Security Level:</source>
-        <translation type="unfinished"></translation>
+        <translation>当前的安全级别:</translation>
     </message>
     <message>
         <source>&amp;Requested Security Level:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;要求的安全级别：</translation>
     </message>
     <message>
         <source>Elapsed Time:</source>
-        <translation type="unfinished"></translation>
+        <translation>耗时:</translation>
     </message>
     <message>
         <source>00:00</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Total Time Ballpark Figure:</source>
-        <translation type="unfinished"></translation>
+        <translation>总时间大致数字:</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>&lt;p&gt;Press &lt;strong&gt;Start&lt;/strong&gt; to improve to the selected security level.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;按&lt;strong&gt;开始&lt;/strong&gt;以提高到选定的安全级别。&lt;p&gt;</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>开始</translation>
     </message>
     <message>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>失败</translation>
     </message>
     <message>
         <source>&lt;p&gt;Improving security level. This can take a long time.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;提高安全等级。这可能需要很长时间。&lt;p&gt;</translation>
     </message>
     <message>
         <source>&lt;p&gt;Finished improving security level.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;已完成提高安全级别。&lt;p&gt;</translation>
     </message>
     <message>
         <source>Infinite</source>
-        <translation type="unfinished"></translation>
+        <translation>无穷</translation>
     </message>
 </context>
 <context>
     <name>ImprovedTabBar</name>
     <message>
         <source>Server Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>服务器标签</translation>
     </message>
 </context>
 <context>
     <name>InfoFrame</name>
     <message>
         <source>serverinfo.tpl</source>
-        <translation></translation>
+        <translation>第三方服务器</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation></translation>
+        <translation>版本</translation>
     </message>
     <message>
         <source>Server Icon</source>
-        <translation></translation>
+        <translation>服务器图标</translation>
     </message>
     <message>
         <source>Current Clients</source>
-        <translation></translation>
+        <translation>当前用户</translation>
     </message>
     <message>
         <source>Total Client Connections</source>
-        <translation></translation>
+        <translation>用户连接总数</translation>
     </message>
     <message>
         <source>Current Channels</source>
-        <translation></translation>
+        <translation>当前频道</translation>
     </message>
     <message>
         <source>Uptime</source>
-        <translation></translation>
+        <translation>运行时间</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation></translation>
+        <translation>地址</translation>
     </message>
     <message>
         <source>Nicknames</source>
-        <translation></translation>
+        <translation>1</translation>
     </message>
     <message>
         <source>License</source>
@@ -4523,91 +4535,91 @@ You need to improve your identity security level.&lt;/span&gt;</source>
     </message>
     <message>
         <source>Refresh</source>
-        <translation></translation>
+        <translation>刷新</translation>
     </message>
     <message>
         <source>channelinfo.tpl</source>
-        <translation></translation>
+        <translation>第三方频道信息</translation>
     </message>
     <message>
         <source>Channel Topic</source>
-        <translation></translation>
+        <translation>频道主题</translation>
     </message>
     <message>
         <source>Moderated</source>
-        <translation></translation>
+        <translation>主持</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation></translation>
+        <translation>是</translation>
     </message>
     <message>
         <source>Unlimited</source>
-        <translation></translation>
+        <translation>无限</translation>
     </message>
     <message>
         <source>Inherited</source>
-        <translation></translation>
+        <translation>继承</translation>
     </message>
     <message>
         <source>Audio Codec</source>
-        <translation></translation>
+        <translation>音频编解码器</translation>
     </message>
     <message>
         <source>Channel Icon</source>
-        <translation></translation>
+        <translation>频道图标</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation></translation>
+        <translation>属性</translation>
     </message>
     <message>
         <source>Subscribed</source>
-        <translation></translation>
+        <translation>订阅</translation>
     </message>
     <message>
         <source>Not subscribed</source>
-        <translation></translation>
+        <translation>没有订阅</translation>
     </message>
     <message>
         <source>Unencrypted</source>
-        <translation></translation>
+        <translation>未加密的</translation>
     </message>
     <message>
         <source>Encrypted</source>
-        <translation></translation>
+        <translation>加密</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation></translation>
+        <translation>描述</translation>
     </message>
     <message>
         <source>Subscription Status</source>
-        <translation></translation>
+        <translation>订阅状态</translation>
     </message>
     <message>
         <source>Needed Talk Power</source>
-        <translation></translation>
+        <translation>需要谈话的权限</translation>
     </message>
     <message>
         <source>Audio Quality</source>
-        <translation></translation>
+        <translation>音频品质</translation>
     </message>
     <message>
         <source>Bitrate</source>
-        <translation></translation>
+        <translation>Bitrate</translation>
     </message>
     <message>
         <source>Audio Transmission</source>
-        <translation></translation>
+        <translation>音频传输</translation>
     </message>
     <message>
         <source>Delete Timer</source>
-        <translation></translation>
+        <translation>删除定时器</translation>
     </message>
     <message>
         <source>clientinfo.tpl</source>
-        <translation></translation>
+        <translation>第三方用户信息</translation>
     </message>
     <message>
         <source>%1 %2 on %3</source>
@@ -4621,91 +4633,91 @@ You need to improve your identity security level.&lt;/span&gt;</source>
     </message>
     <message>
         <source>Total Connections</source>
-        <translation></translation>
+        <translation>连接总数</translation>
     </message>
     <message>
         <source>Volume Modifier</source>
-        <translation></translation>
+        <translation>修改音量</translation>
     </message>
     <message>
         <source>First Connected</source>
-        <translation></translation>
+        <translation>首次连接</translation>
     </message>
     <message>
         <source>Last Connected</source>
-        <translation></translation>
+        <translation>最近一次的连接</translation>
     </message>
     <message>
         <source>Online since</source>
-        <translation></translation>
+        <translation>在线日期</translation>
     </message>
     <message>
         <source>Client requested talk power at &lt;strong&gt;%1&lt;/strong&gt;.</source>
-        <translation></translation>
+        <translation>客户请求&lt;strong&gt;%1 &lt;/strong&gt;通话的权限。</translation>
     </message>
     <message>
         <source>[Inherited from: %1]</source>
-        <translation></translation>
+        <translation>继承%1</translation>
     </message>
     <message>
         <source>Server Groups</source>
-        <translation></translation>
+        <translation>服务器组</translation>
     </message>
     <message>
         <source>Channel Group</source>
-        <translation></translation>
+        <translation>频道组</translation>
     </message>
     <message>
         <source>&lt;avatar ignored&gt;</source>
-        <translation></translation>
+        <translation>头像被忽略了</translation>
     </message>
     <message>
         <source>Away</source>
-        <translation></translation>
+        <translation>离开</translation>
     </message>
     <message>
         <source>&lt;away message ignored&gt;</source>
-        <translation></translation>
+        <translation>离开时忽略消息</translation>
     </message>
     <message>
         <source>Speakers/Headphones Disabled</source>
-        <translation></translation>
+        <translation>扬声器/耳机禁用</translation>
     </message>
     <message>
         <source>Speakers/Headphones Muted</source>
-        <translation></translation>
+        <translation>扬声器/耳机静音</translation>
     </message>
     <message>
         <source>Microphone Disabled</source>
-        <translation></translation>
+        <translation>已关闭麦克风</translation>
     </message>
     <message>
         <source>Microphone Muted</source>
-        <translation></translation>
+        <translation>已静音麦克风</translation>
     </message>
     <message>
         <source>Local Muted</source>
-        <translation></translation>
+        <translation>本地静音</translation>
     </message>
     <message>
         <source>Invalid License</source>
-        <translation></translation>
+        <translation>无效的license</translation>
     </message>
     <message>
         <source>No License</source>
-        <translation></translation>
+        <translation>没有License</translation>
     </message>
     <message>
         <source>Host Provider License</source>
-        <translation></translation>
+        <translation>主机提供的license</translation>
     </message>
     <message>
         <source>LAN License</source>
-        <translation></translation>
+        <translation>LAN License</translation>
     </message>
     <message>
         <source>Non-Profit License</source>
-        <translation></translation>
+        <translation>非商业用途的License</translation>
     </message>
     <message>
         <source>Activation License</source>
@@ -4713,7 +4725,7 @@ You need to improve your identity security level.&lt;/span&gt;</source>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>未知</translation>
     </message>
     <message>
         <source>Speex Narrowband</source>
@@ -4729,541 +4741,542 @@ You need to improve your identity security level.&lt;/span&gt;</source>
     </message>
     <message>
         <source>CELT Mono</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Opus Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>作品声音</translation>
     </message>
     <message>
         <source>Opus Music</source>
-        <translation type="unfinished"></translation>
+        <translation>作品音乐</translation>
     </message>
     <message>
         <source>Unknown Codec</source>
-        <translation type="unfinished"></translation>
+        <translation>未知编解码器</translation>
     </message>
     <message>
         <source>Refresh available every 5 seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>每5秒刷新一次</translation>
     </message>
 </context>
 <context>
     <name>InvitationDialog</name>
     <message>
         <source>Invite Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请好友</translation>
     </message>
     <message>
         <source>Invitation Type:</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请类型:</translation>
     </message>
     <message>
         <source>Insert my current:</source>
-        <translation type="unfinished"></translation>
+        <translation>插入当前:</translation>
     </message>
     <message>
         <source>Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>频道</translation>
     </message>
     <message>
         <source>Server</source>
-        <translation type="unfinished"></translation>
+        <translation>服务器</translation>
     </message>
     <message>
         <source>Add Privilege Key</source>
-        <translation type="unfinished"></translation>
+        <translation>添加权限密钥</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>复制到剪贴板</translation>
     </message>
     <message>
         <source>ts3server link</source>
-        <translation type="unfinished"></translation>
+        <translation>ts3server 链接</translation>
     </message>
     <message>
         <source>http redirection</source>
-        <translation type="unfinished"></translation>
+        <translation>http重定向</translation>
     </message>
     <message>
         <source>html code</source>
-        <translation type="unfinished"></translation>
+        <translation>html代码</translation>
     </message>
     <message>
         <source>The current channel has a password which is not known by your client.&lt;br&gt;Please add the password manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>当前频道具有用户未知的密码。请手动添加密码。</translation>
     </message>
     <message>
         <source>Invitation</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请</translation>
     </message>
     <message>
         <source>The server password stored in your bookmark is not the same as the real server password.</source>
-        <translation type="unfinished"></translation>
+        <translation>存储在书签中的服务器密码与实际服务器密码不相同。</translation>
     </message>
     <message>
         <source>Failed to validate server password</source>
-        <translation type="unfinished"></translation>
+        <translation>验证服务器密码失败</translation>
     </message>
 </context>
 <context>
     <name>LicenseViewer</name>
     <message>
         <source>License agreement</source>
-        <translation type="unfinished"></translation>
+        <translation>License协议</translation>
     </message>
     <message>
         <source>Open in Webbrowser</source>
-        <translation type="unfinished"></translation>
+        <translation>打开浏览器</translation>
     </message>
     <message>
         <source>I accept</source>
-        <translation type="unfinished"></translation>
+        <translation>我同意</translation>
     </message>
     <message>
         <source>I do not accept</source>
-        <translation type="unfinished"></translation>
+        <translation>我不同意</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Failed to download license.</source>
-        <translation type="unfinished"></translation>
+        <translation>下载License失败</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>工具栏</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认</translation>
     </message>
     <message>
         <source>Toggle Subscribe Mode for this server
 Current: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>切换此服务器的订阅模式
+当前：%1</translation>
     </message>
     <message>
         <source>Subscribe all</source>
-        <translation type="unfinished"></translation>
+        <translation>订阅全部</translation>
     </message>
     <message>
         <source>Subscribe selected</source>
-        <translation type="unfinished"></translation>
+        <translation>订阅选中的</translation>
     </message>
     <message>
         <source>%1 on %2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Transfer Completed</source>
-        <translation type="unfinished"></translation>
+        <translation>传输完成</translation>
     </message>
     <message>
         <source>Away on this server</source>
-        <translation type="unfinished"></translation>
+        <translation>在这个服务器上</translation>
     </message>
     <message>
         <source>&lt;p style=&quot;color:red;&quot;&gt;Your message has not been sent. Message limit has been exceeded.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p style=&quot;color:red;&quot;&gt;您的消息尚未发送。超过了消息限制。&lt;p&gt;</translation>
     </message>
     <message>
         <source>&lt;p style=&quot;color:blue;&quot;&gt;Built-in commands: /close, /clear, /exit&lt;br&gt;Plugin commands: /&amp;lt;plugin-command-keyword&amp;gt; &amp;lt;plugin-command&amp;gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p style=&quot;color:blue;&quot;&gt;内置命令：/ close，/ clear，/ exit &lt;br&gt;插件命令：/&amp;lt; 插件命令关键词3：&amp;gt;&amp;LT;插件命令&amp;GT; &lt;/P&gt;</translation>
     </message>
     <message>
         <source>&lt;span style=&quot;color:red;&quot;&gt;Invalid command or missing parameters: %1&lt;/span&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;span style=&quot;color:red;&quot;&gt;无效的命令或缺少参数：%1 &lt;/span&gt;</translation>
     </message>
     <message>
         <source>Mute Speakers/Headphones on all servers</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Unmute Speakers/Headphones on all servers</source>
-        <translation type="unfinished"></translation>
+        <translation>在所有服务器上取消静音扬声器/耳机</translation>
     </message>
     <message>
         <source>Mute Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>静音麦克风</translation>
     </message>
     <message>
         <source>Unmute Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>取消麦克风静音</translation>
     </message>
     <message>
         <source>Mute Speakers/Headphones</source>
-        <translation type="unfinished"></translation>
+        <translation>扬声器/耳机静音</translation>
     </message>
     <message>
         <source>Unmute Speakers/Headphones</source>
-        <translation type="unfinished"></translation>
+        <translation>取消扬声器/耳机静音</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>信息</translation>
     </message>
     <message>
         <source>&lt;p&gt;This is the last TeamSpeak version available for Windows Vista.&lt;/p&gt;&lt;p&gt;To upgrade TeamSpeak and take advantage of the latest features and bug fixes, please update your operating system to Windows 7 or newer.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;这是适用于Windows Vista的最后一个TeamSpeak版本。&lt;/p&gt; &lt;p&gt;要升级TeamSpeak并利用最新功能和错误修复，请将您的操作系统更新到Windows 7或更高版本。&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Use Privilege Key</source>
-        <translation type="unfinished"></translation>
+        <translation>使用权限密钥</translation>
     </message>
     <message>
         <source>&lt;p&gt;This is a newly configured server for which administrator privileges have not yet been claimed.&lt;br&gt;Please enter the Privilege Key that was automatically generated when this server was created&lt;br&gt;to gain administrator privileges.&lt;/p&gt;&lt;p&gt;Enter Privilege Key:&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;这是一个新配置的服务器，尚未声明管理员权限。&lt;br&gt;请输入创建此服务器时自动生成的权限密钥以获得管理员权限。&lt;/p&gt;&lt;p&gt;输入权限密钥：&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Enter Privilege Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>输入权限密钥：</translation>
     </message>
     <message>
         <source>Select File</source>
-        <translation type="unfinished"></translation>
+        <translation>选择文件</translation>
     </message>
     <message>
         <source>Wave files (*.wav)</source>
-        <translation type="unfinished"></translation>
+        <translation>波形文件</translation>
     </message>
     <message>
         <source>Transfer &quot;%1&quot; reports: (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>传输“%1”报告：（%2）</translation>
     </message>
     <message>
         <source>Question</source>
-        <translation type="unfinished"></translation>
+        <translation>问题</translation>
     </message>
     <message>
         <source>&lt;p&gt;You have no telephony accounts configured yet.&lt;/p&gt;&lt;p&gt;Open telephony options to setup a new account?&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;您还没有配置电话帐户。&lt;p&gt;&lt;p&gt;打开电话选项以设置新帐户？&lt;/P&gt;</translation>
     </message>
     <message>
         <source>/s</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;About TeamSpeak 3</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;关于TeamSpeak 3</translation>
     </message>
     <message>
         <source>Show application and copyright information</source>
-        <translation type="unfinished"></translation>
+        <translation>显示应用程序和版权信息</translation>
     </message>
     <message>
         <source>&amp;Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;连接</translation>
     </message>
     <message>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Connect to a TeamSpeak server</source>
-        <translation type="unfinished"></translation>
+        <translation>连接到Teamspeak服务器</translation>
     </message>
     <message>
         <source>&amp;Disconnect from Current</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;从当前断开</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Disconnect from the currently active server tab</source>
-        <translation type="unfinished"></translation>
+        <translation>从当前活动的服务器选项卡断开连接</translation>
     </message>
     <message>
         <source>&amp;Disconnect from All</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;断开所有</translation>
     </message>
     <message>
         <source>Disconnect from all TeamSpeak Servers</source>
-        <translation type="unfinished"></translation>
+        <translation>断开与所有Teamspeak服务器的连接</translation>
     </message>
     <message>
         <source>&amp;Server List</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;服务器列表</translation>
     </message>
     <message>
         <source>Show list of known TeamSpeak 3 servers</source>
-        <translation type="unfinished"></translation>
+        <translation>显示已知TeamSpeak 3服务器的列表</translation>
     </message>
     <message>
         <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;退出</translation>
     </message>
     <message>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Exit TeamSpeak</source>
-        <translation type="unfinished"></translation>
+        <translation>退出TeamSpeak</translation>
     </message>
     <message>
         <source>&amp;Toggle Away Status</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;切换离开状态</translation>
     </message>
     <message>
         <source>Toggle the Away status</source>
-        <translation type="unfinished"></translation>
+        <translation>切换离开状态</translation>
     </message>
     <message>
         <source>&amp;Set Away</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;设置离开</translation>
     </message>
     <message>
         <source>Set your status to Away</source>
-        <translation type="unfinished"></translation>
+        <translation>设置你的状态为离开</translation>
     </message>
     <message>
         <source>&amp;Set Globally Away</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;设置全局为离开</translation>
     </message>
     <message>
         <source>Set you status Globally Away</source>
-        <translation type="unfinished"></translation>
+        <translation>设置你的全局状态为离开</translation>
     </message>
     <message>
         <source>&amp;Set Away Status</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;设置离开状态</translation>
     </message>
     <message>
         <source>&amp;Set Globally Away Status</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;设置全局状态为离开</translation>
     </message>
     <message>
         <source>&amp;Online</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;在线</translation>
     </message>
     <message>
         <source>Set status to Online on the active server</source>
-        <translation type="unfinished"></translation>
+        <translation>在活动的服务器上状态设置为在线</translation>
     </message>
     <message>
         <source>&amp;Online on all servers</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;所有服务器为在线</translation>
     </message>
     <message>
         <source>Set your status to online on the all server</source>
-        <translation type="unfinished"></translation>
+        <translation>在所有服务器上设置你的状态为在线</translation>
     </message>
     <message>
         <source>(Un)Mute the Microphone on the current server</source>
-        <translation type="unfinished"></translation>
+        <translation>将当前服务器上的麦克风设置为静音/取消静音</translation>
     </message>
     <message>
         <source>&amp;Activate Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;激活麦克风</translation>
     </message>
     <message>
         <source>Activate the Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>激活麦克风</translation>
     </message>
     <message>
         <source>(Un)Mute the Speakers/Headphones on the current server</source>
-        <translation type="unfinished"></translation>
+        <translation>将当前服务器上的扬声器/耳机设置为静音/取消静音</translation>
     </message>
     <message>
         <source>(Un)Mute the Speakers/Headphones on all servers</source>
-        <translation type="unfinished"></translation>
+        <translation>将所有服务器上的扬声器/耳机设置为静音/取消静音</translation>
     </message>
     <message>
         <source>&amp;Options</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;选择</translation>
     </message>
     <message>
         <source>Open options dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>打开选择对话框</translation>
     </message>
     <message>
         <source>Alt+P</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Start &amp;Overwolf</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Start Overwolf Overlay</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Collected &amp;URLs</source>
-        <translation type="unfinished"></translation>
+        <translation>收集的&amp;URL</translation>
     </message>
     <message>
         <source>Display collected internet locations</source>
-        <translation type="unfinished"></translation>
+        <translation>显示收集的互联网位置</translation>
     </message>
     <message>
         <source>Ctrl+U</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>File &amp;Transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>文件&amp;传输</translation>
     </message>
     <message>
         <source>Display file transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>显示文件传输</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>联系人</translation>
     </message>
     <message>
         <source>Manage contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>管理联系人</translation>
     </message>
     <message>
         <source>Ctrl+Shift+O</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Visit TeamSpeak &amp;Webpage</source>
-        <translation type="unfinished"></translation>
+        <translation>访问TeamSpeak&amp;网页</translation>
     </message>
     <message>
         <source>Visit the TeamSpeak webpage at www.TeamSpeak.com</source>
-        <translation type="unfinished"></translation>
+        <translation>访问TeamSpeak www.TeamSpeak.com</translation>
     </message>
     <message>
         <source>&amp;myTeamSpeak Account</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;myTeamSpeak帐户</translation>
     </message>
     <message>
         <source>Visit the myTeamSpeak account webpage</source>
-        <translation type="unfinished"></translation>
+        <translation>访问myTeamSpeak帐户网页</translation>
     </message>
     <message>
         <source>Visit TeamSpeak &amp;Support Forum</source>
-        <translation type="unfinished"></translation>
+        <translation>访问TeamSpeak &amp;支持论坛</translation>
     </message>
     <message>
         <source>Visit the TeamSpeak support forum at forum.TeamSpeak.com</source>
-        <translation type="unfinished"></translation>
+        <translation>访问forum.TeamSpeak.com上的TeamSpeak支持论坛</translation>
     </message>
     <message>
         <source>&amp;Rent own TeamSpeak Server</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;租用自己的TeamSpeak服务器</translation>
     </message>
     <message>
         <source>Find out where to get your own TeamSpeak Server</source>
-        <translation type="unfinished"></translation>
+        <translation>找出自己的TeamSpeak服务器的位置</translation>
     </message>
     <message>
         <source>Client &amp;Log</source>
-        <translation type="unfinished"></translation>
+        <translation>用户&amp;日志</translation>
     </message>
     <message>
         <source>Display client log</source>
-        <translation type="unfinished"></translation>
+        <translation>显示用户日志</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Server Log</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;服务器日志</translation>
     </message>
     <message>
         <source>Display server log messages</source>
-        <translation type="unfinished"></translation>
+        <translation>显示服务器日志消息</translation>
     </message>
     <message>
         <source>Ctrl+Shift+L</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Server Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;服务器组</translation>
     </message>
     <message>
         <source>Manage server group permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>管理服务器组权限</translation>
     </message>
     <message>
         <source>Ctrl+F1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Client Permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;用户权限</translation>
     </message>
     <message>
         <source>Manage client permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>管理用户权限</translation>
     </message>
     <message>
         <source>Ctrl+F2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Channel Permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;频道权限</translation>
     </message>
     <message>
         <source>Manage channel permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>管理频道权限</translation>
     </message>
     <message>
         <source>Ctrl+F3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Channel Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;频道组</translation>
     </message>
     <message>
         <source>Manage channel group permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>管理频道组权限</translation>
     </message>
     <message>
         <source>Ctrl+F4</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Channel Client Permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;频道用户权限</translation>
     </message>
     <message>
         <source>Manage channel client permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>管理用户的频道权限</translation>
     </message>
     <message>
         <source>Ctrl+F5</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Check for &amp;Update</source>
-        <translation type="unfinished"></translation>
+        <translation>检查&amp;更新</translation>
     </message>
     <message>
         <source>Check if a new TeamSpeak 3 client version is available</source>
-        <translation type="unfinished"></translation>
+        <translation>检查是否有新的TeamSpeak 3客户端版本可用</translation>
     </message>
     <message>
         <source>Show News &amp;Ticker</source>
@@ -5275,23 +5288,23 @@ Current: %1</source>
     </message>
     <message>
         <source>&amp;Identities</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;身份</translation>
     </message>
     <message>
         <source>Manage user identities</source>
-        <translation type="unfinished"></translation>
+        <translation>管理用户身份</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;ServerQuery Login</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;服务器查询登录</translation>
     </message>
     <message>
         <source>Set login name and password for your ServerQuery connection</source>
-        <translation type="unfinished"></translation>
+        <translation>为您的服务器查询连接设置登录名和密码</translation>
     </message>
     <message>
         <source>Use &amp;Privilege Key</source>
@@ -5303,11 +5316,11 @@ Current: %1</source>
     </message>
     <message>
         <source>Channel &amp;Groups of Client</source>
-        <translation type="unfinished"></translation>
+        <translation>频道&amp;客户端组</translation>
     </message>
     <message>
         <source>Display channel groups of specified client</source>
-        <translation type="unfinished"></translation>
+        <translation>显示指定用户频道组</translation>
     </message>
     <message>
         <source>Start &amp;Recording</source>
@@ -5319,7 +5332,7 @@ Current: %1</source>
     </message>
     <message>
         <source>Ctrl+Shift+R</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Stop &amp;Recording</source>
@@ -5331,7 +5344,7 @@ Current: %1</source>
     </message>
     <message>
         <source>Ctrl+Shift+T</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Status Bar</source>
@@ -5339,15 +5352,15 @@ Current: %1</source>
     </message>
     <message>
         <source>Offline Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>离线消息</translation>
     </message>
     <message>
         <source>Open Offline Message Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>打开离线消息对话框</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Toggle channel subscribe mode</source>
@@ -5355,19 +5368,19 @@ Current: %1</source>
     </message>
     <message>
         <source>Ban List</source>
-        <translation type="unfinished"></translation>
+        <translation>黑名单列表</translation>
     </message>
     <message>
         <source>Opens the Ban List</source>
-        <translation type="unfinished"></translation>
+        <translation>打开黑名单列表</translation>
     </message>
     <message>
         <source>Ctrl+Shift+B</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Complaints List</source>
-        <translation type="unfinished"></translation>
+        <translation>投诉列表</translation>
     </message>
     <message>
         <source>Show list of complaints</source>
@@ -5375,7 +5388,7 @@ Current: %1</source>
     </message>
     <message>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>View &amp;Changelog</source>
@@ -5395,7 +5408,7 @@ Current: %1</source>
     </message>
     <message>
         <source>Set &amp;Phonetic Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">设置&amp;拼音昵称：</translation>
     </message>
     <message>
         <source>Set your nickname written in phonemes</source>
@@ -5403,23 +5416,23 @@ Current: %1</source>
     </message>
     <message>
         <source>&amp;Privilege Keys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;特权私钥</translation>
     </message>
     <message>
         <source>Manage privilege keys on this server</source>
-        <translation type="unfinished"></translation>
+        <translation>管理此服务器的特权密钥</translation>
     </message>
     <message>
         <source>&amp;Connection Info</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;连接信息</translation>
     </message>
     <message>
         <source>Retrieve connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>获取连接信息</translation>
     </message>
     <message>
         <source>&amp;List All Clients</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;所有用户列表</translation>
     </message>
     <message>
         <source>Show list of all clients on the current server</source>
@@ -5427,11 +5440,11 @@ Current: %1</source>
     </message>
     <message>
         <source>Customize Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>定制工具栏</translation>
     </message>
     <message>
         <source>Master Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>主音量</translation>
     </message>
     <message>
         <source>&amp;Whisper Lists</source>
@@ -5439,11 +5452,11 @@ Current: %1</source>
     </message>
     <message>
         <source>Manage whisper lists</source>
-        <translation type="unfinished"></translation>
+        <translation>管理私聊列表</translation>
     </message>
     <message>
         <source>Ctrl+Shift+W</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Whisper History</source>
@@ -5455,15 +5468,15 @@ Current: %1</source>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Invite Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;邀请好友</translation>
     </message>
     <message>
         <source>Invite a buddy to this server</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请好友到此服务器</translation>
     </message>
     <message>
         <source>&amp;Toggle ServerQueryClients</source>
@@ -5483,27 +5496,27 @@ Current: %1</source>
     </message>
     <message>
         <source>&amp;Call</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;呼叫</translation>
     </message>
     <message>
         <source>Call user</source>
-        <translation type="unfinished"></translation>
+        <translation>呼叫用户</translation>
     </message>
     <message>
         <source>Open telephony settings</source>
-        <translation type="unfinished"></translation>
+        <translation>打开电话通讯设置</translation>
     </message>
     <message>
         <source>&amp;Connections</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;连接</translation>
     </message>
     <message>
         <source>S&amp;elf</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Per&amp;missions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">权限</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
@@ -5515,31 +5528,31 @@ Current: %1</source>
     </message>
     <message>
         <source>P&amp;lugins</source>
-        <translation type="unfinished"></translation>
+        <translation>插件</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;帮助</translation>
     </message>
     <message>
         <source>On active server</source>
-        <translation type="unfinished"></translation>
+        <translation>活动的服务器</translation>
     </message>
     <message>
         <source>Set Away</source>
-        <translation type="unfinished"></translation>
+        <translation>设置成离开</translation>
     </message>
     <message>
         <source>Install &amp;Overwolf</source>
-        <translation type="unfinished"></translation>
+        <translation>安装 &amp;Overwolf</translation>
     </message>
     <message>
         <source>Install Overwolf Overlay</source>
-        <translation type="unfinished"></translation>
+        <translation>安装Overwolf Overlay</translation>
     </message>
     <message>
         <source>Filetransfer in progress</source>
-        <translation type="unfinished"></translation>
+        <translation>正在传输的文件</translation>
     </message>
     <message numerus="yes">
         <source>There are %n filetransfer(s) in progress.</source>
@@ -5549,19 +5562,19 @@ Current: %1</source>
     </message>
     <message>
         <source>If you quit now, any transfer will be aborted.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果您现在退出，所有传输将被中止。</translation>
     </message>
     <message>
         <source>Do you really want to quit?</source>
-        <translation type="unfinished"></translation>
+        <translation>你确认要退出吗？</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Failed to start Overwolf</source>
-        <translation type="unfinished"></translation>
+        <translation>启动Overwolf失败</translation>
     </message>
 </context>
 <context>
