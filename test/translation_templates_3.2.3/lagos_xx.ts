@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>For support please visit our &lt;a href=&quot;http://forum.teamspeak.com&quot;&gt;forum&lt;/a&gt;</source>
-        <translation>若翻译有误联系方式:cn-duanyu@gmail.com</translation>
+        <translation>若翻译有误联系方式:cn-duanyu@foxmail.com</translation>
     </message>
     <message>
         <source>PLACEHOLDER</source>
@@ -7764,15 +7764,15 @@ Are you sure you want to proceed?</source>
     <name>ServerConnectionInfoDialog</name>
     <message>
         <source>Server Connection Info</source>
-        <translation type="unfinished"></translation>
+        <translation>服务器连接信息</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>名称</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>版本</translation>
     </message>
     <message>
         <source>Average ping</source>
