@@ -84,7 +84,7 @@ class mysql:
         check = 0
         os.system("rm -rf " + installPath)
         check = os.system("tar zxvf " +tarFilePath+ " -C /usr/local/ > /dev/null 2>&1")
-        os.system("ln -s /usr/local/mariadb-10.3.14-linux-x86_64 " + installPath)
+        os.system("ln -s /usr/local/mariadb-*-linux-x86_64 " + installPath)
 
         print("done unpack mariadb tarball ...........................")
 
