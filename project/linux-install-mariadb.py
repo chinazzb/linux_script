@@ -83,8 +83,9 @@ class mysql:
         tarFilePath = cf.get("mysql","tarFilePath")
         check = 0
         os.system("rm -rf " + installPath)
-        check = os.system("tar zxvf " +tarFilePath+ " -C /usr/local/ > /dev/null 2>&1")
-        os.system("ln -s /usr/local/mariadb-*-linux-x86_64 " + installPath)
+        check = os.system("tar zxvf " + tarFilePath + " -C /usr/local/ > /dev/null 2>&1")
+
+        os.system("ln -sf `ls /usr/local/ | grep mariadb` " + installPath)
 
         print("done unpack mariadb tarball ...........................")
 
@@ -112,19 +113,26 @@ class mysql:
         time.sleep(3)
         os.system(installPath+"/scripts/mysql_install_db --user=mysql --basedir=" + installPath + " --datadir="+dbDataDir)
         print("done formatted mariadb.................................")
+
+    @staticmethod
+    def config_file():
+        os.system("/usr/bin/cp -f ./conf/my.cnf /etc/my.cnf")
+
+        basedir = "basedir=" + installPath
+        datadir = "datadir=" + dbDataDir
+        #basedir
+        os.system('sed -i "5c ' + basedir + '" /etc/my.cnf')
+        #datadir
+        os.system('sed -i "6c ' + datadir + '" /etc/my.cnf')
+
     @staticmethod
     def init():
         print("mariadb init.d............................")
         time.sleep(3)
 
-        os.system("cp " + installPath + "/support-files/mysql.server /etc/init.d/mysql")
-        basedir = "basedir="+installPath
-        datadir = "datadir="+dbDataDir
-        #basedir
-        os.system('sed -i "45c ' + basedir + '" /etc/init.d/mysql')
-        #datadir
-        os.system('sed -i "46c ' + datadir + '" /etc/init.d/mysql')
+        os.system("cp " + installPath + "/support-files/systemd/mariadb.service /usr/lib/systemd/system/")
 
+        os.system("systemctl enable mariadb")
         print("done mariadb init.d.......................")
 
 
