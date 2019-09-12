@@ -17,10 +17,9 @@ cf = configparser.ConfigParser()
 configFilePath = "./install.conf"
 cf.read(configFilePath,encoding="utf-8-sig")
 
-tomcatTar = cf.get("tomcat","tarFilePath")
-tomcatTmpPath = cf.get("tomcat","tmpPath")
-tomcatApr = tomcatTmpPath + "/tomcat-apr"
-tomcatInstallPath = cf.get("tomcat","installPath")
+tarFilesPath = cf.get("tomcat", "tarFilesPath")
+tmpPath = cf.get("tomcat","tmpPath")
+installPath = cf.get("tomcat", "installPath")
 jdkInstallPath = cf.get("java","installPath")
 systemType = cf.get("system","systemType")
 
@@ -31,17 +30,19 @@ class system:
     def basis():
         hostName = cf.get("system","hostName")
         check = 1
-        print(systemType + " system.................................")
         if 'Centos' in systemType or 'Redhat'in systemType:
+            print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("yum install -y gcc gcc-c++ bzip2 > /dev/null 2>&1")
+            check = os.system("yum install -y gcc gcc-c++ > /dev/null 2>&1")
             #modify host name
-            os.system("echo " + hostName + "> /etc/hostname")
+            os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/hostname")
+
         elif 'SUSE' in systemType:
+            print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++ > /dev/null 2>&1")
-            os.system("echo " + hostName + "> /etc/HOSTNAME")
-            os.system("sysctl -w kernel.hostname=" + hostName + " > /dev/null 2>&1")
+            check = os.system("zypper install -y gcc gcc-c++ /dev/null 2>&1")
+            #modify host name
+            os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/HOSTNAME")
 
         if 0 != check:
             print("请检查zypp源 or yum源 是否正常使用")
@@ -50,39 +51,36 @@ class system:
     @staticmethod
     def tarz_tomcat():
         tomcatTarMD5 = "535d83309fd8109f064048b831fd3c9e"
-        if not os.path.exists(tomcatTar):
+        if not os.path.exists(tarFilesPath):
             print('请检查配置文件,[tomcat]子项下的 "tomcatFilePath" 是否存在')
             os._exit(4)
 
         #tmp dir
         check = 0
-        check += os.system("rm -rf  " + tomcatTmpPath)
-        check += os.system("mkdir " + tomcatTmpPath)
-        check += os.system("tar xvf " + tomcatTar + " -C " + tomcatTmpPath + " > /dev/null 2>&1")
-        check += os.system("for i in " + tomcatTmpPath + "/tomcat-apr/*.tar.gz;do tar zxvf $i -C " + tomcatTmpPath + " > /dev/null 2>&1;done")
-        check += os.system("tar xvf " + tomcatTmpPath + "/tomcat-apr/expat* -C  " + tomcatTmpPath + " > /dev/null 2>&1")
+        check += os.system("mkdir " + tmpPath)
+        check += os.system("for i in `ls " + tarFilesPath + "/*.tar.gz | grep -v jdk`; do tar zxvf $i -C " + tmpPath + " > /dev/null 2>&1;done")
+        check += os.system("tar xvf " + tarFilesPath + "/expat* -C " + tmpPath + " > /dev/null 2>&1")
         if 0 != check:
             print("unzip tomcat-apr.tar fatal................................")
 
     @staticmethod
     def jdk_configure():
-        jdkPath = tomcatTmpPath
         os.system("rm -rf " + jdkInstallPath)
         os.system("mkdir " + jdkInstallPath)
-        os.system("mv " + jdkPath + "/jdk* " + jdkInstallPath)
+        os.system("tar zxvf " + tarFilesPath + "/jdk* -C " + jdkInstallPath)
         jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
         #检查是否已经配置javahome
         print("开始配置JAVAHOME....................................")
         time.sleep(3)
-        checkJavaHome = os.system("cat /etc/profile | grep JAVA_HOME > /dev/null 2>&1")
+        checkJavaHome = os.system("cat /etc/profile.d/jdkHome.sh | grep JAVA_HOME > /dev/null 2>&1")
         if 0 != checkJavaHome:
             profile = open("/etc/profile.d/jdkHome.sh","a")
             profile.write("JAVA_HOME=" + jdkHome + "\n")
             profile.write("JRE_HOME=$JAVA_HOME/jre\n")
             profile.write("CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib\n")
             profile.write("LD_LIBRARY_PATH=/usr/local/apr/lib:$LD_LIBRARY_PATH\n")
-            profile.write("CATALINA_HOME=" + tomcatInstallPath + "\n")
-            profile.write("CATALINA_BASE=" + tomcatInstallPath + "\n")
+            profile.write("CATALINA_HOME=" + installPath + "\n")
+            profile.write("CATALINA_BASE=" + installPath + "\n")
             profile.write("PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin\n")
             profile.write("export JAVA_HOME JRE_HOME PATH CLASSPATH LD_LIBRARY_PATH\n")
             profile.close()
@@ -115,11 +113,11 @@ class software:
         print("开始编译tomcat及依赖包.........................................................")
         time.sleep(3)
         #tomcat
-        replace(tomcatTmpPath + "/apr-1.6.5/configure","RM='$RM'","RM='$RM -f'")
+        os.system("sed -i #RM='$RM'#RM='$RM -f'# " + tmpPath + "/apr-*/configure")
         #make
         print("开始编译apr............................................................")
         time.sleep(3)
-        checkApr = os.system("cd " + tomcatTmpPath + "/apr-*"
+        checkApr = os.system("cd " + tmpPath + "/apr-*"
                                                      " && ./configure --prefix=/usr/local/apr/ > /dev/null 2>&1"
                                                      " && make > /dev/null 2>&1"
                                                      " && make install > /dev/null 2>&1")
@@ -132,7 +130,7 @@ class software:
     def make_tomcat_apr_iconv():
         print("开始编译apr-iconv.......................................................")
         time.sleep(3)
-        checkAprIconv = os.system("cd "+ tomcatTmpPath + "/apr-iconv*"
+        checkAprIconv = os.system("cd "+ tmpPath + "/apr-iconv*"
                                                          " && ./configure --prefix=/usr/local/apr-iconv/"
                                                          " --with-apr=/usr/local/apr > /dev/null 2>&1"
                                                          " && make > /dev/null 2>&1"
@@ -146,7 +144,7 @@ class software:
     def make_expat():
         print("开始编译expat..........................................................")
         time.sleep(3)
-        checkExpat = os.system("cd " + tomcatTmpPath + "/expat*"
+        checkExpat = os.system("cd " + tmpPath + "/expat*"
                                                        " && ./configure --prefix=/usr/local/expat > /dev/null 2>&1"
                                                        " && make > /dev/null 2>&1"
                                                        " && make install > /dev/null 2>&1")
@@ -159,7 +157,7 @@ class software:
     def make_tomcat_apr_util():
         print("开始编译apr-util.......................................................")
         time.sleep(3)
-        checkAprUtil = os.system("cd " + tomcatTmpPath + "/apr-util* "
+        checkAprUtil = os.system("cd " + tmpPath + "/apr-util* "
                                                          " && ./configure --prefix=/usr/local/apr-util"
                                                          " --with-apr=/usr/local/apr"
                                                          " --with-apr-iconv=/usr/local/apr-iconv/bin/apriconv"
@@ -177,7 +175,7 @@ class software:
         print("开始编译TomcatNative.......................................................")
         time.sleep(3)
         os.system("groupadd web && useradd -g web -s /bin/false -M tomcat")
-        checkTomcatNative = os.system("cd " + tomcatTmpPath + "/apache-tomcat-*/bin/"
+        checkTomcatNative = os.system("cd " + tmpPath + "/apache-tomcat-*/bin/"
                                                               " && tar zxvf tomcat-native.tar.gz > /dev/null 2>&1"
                                                               " && cd tomcat-native-*/native"
                                                               " && ./configure --with-apr=/usr/local/apr/bin/apr-1-config"
@@ -197,10 +195,10 @@ class software:
         checkAprSoftLink = os.system("cp -R /usr/local/apr/lib/* /usr/lib64"
                                     " && cp -R /usr/local/apr/lib/* /usr/lib")
 
-        os.system("rm -rf " + tomcatInstallPath)
+        os.system("rm -rf " + installPath)
         #soft link
         os.system("mv /tmp/tomcat/apache-tomcat* /usr/local/")
-        os.system("ln -s /usr/local/apache-tomcat* " + tomcatInstallPath)
+        os.system("ln -s /usr/local/apache-tomcat* " + installPath)
         os.system("rm -rf /etc/tomcat"
                   " && ln -s /usr/local/apache-tomcat*/conf /etc/tomcat")
 
@@ -215,28 +213,28 @@ class software:
 
         #server
         os.system("rm -rf /etc/tomcat/server.xml")
-        os.system("mv  " + tomcatTmpPath + "/tomcat-apr/server.xml /etc/tomcat/")
+        os.system("mv  " + tmpPath + "/tomcat-apr/server.xml /etc/tomcat/")
 
         minThread = 'minSpareThreads=" '+ cf.get("tomcat","minThread") + '"'
         maxThread = 'maxThreads="'+ cf.get("tomcat","maxThread") + '"'
         replace("/etc/tomcat/server.xml",'minSpareThreads="400"',minThread)
         replace("/etc/tomcat/server.xml",'maxThreads="1000"',maxThread)
-        tomcatProject = tomcatInstallPath + "/webapps/"
+        tomcatProject = installPath + "/webapps/"
 
         #tomcat-users
         os.system("rm -rf /etc/tomcat/tomcat-users.xml")
-        os.system("mv  " + tomcatTmpPath + "/tomcat-apr/tomcat-users.xml /etc/tomcat/")
+        os.system("mv  " + tmpPath + "/tomcat-apr/tomcat-users.xml /etc/tomcat/")
 
         #tomcat manager
         os.system("rm -rf " + tomcatProject+"*")
-        os.system("cp -r " + tomcatTmpPath + "/tomcat-apr/manager/ " + tomcatProject)
-        os.system("chown -hR tomcat:web {/usr/local/apache-tomcat*," + tomcatInstallPath + "}")
+        os.system("cp -r " + tmpPath + "/tomcat-apr/manager/ " + tomcatProject)
+        os.system("chown -hR tomcat:web {/usr/local/apache-tomcat*," + installPath + "}")
 
         print("tomcat optimization done...........................................................")
 
     @staticmethod
     def enable_tomcat():
-        os.system("cp " + tomcatTmpPath + "/tomcat-apr/tomcat /etc/init.d/tomcat")
+        os.system("cp " + tmpPath + "/tomcat-apr/tomcat /etc/init.d/tomcat")
         os.system("chmod 755 /etc/init.d/tomcat")
         os.system("chkconfig tomcat on")
         time.sleep(6)
@@ -272,6 +270,9 @@ def integeration():
     software.install_tomcat()
     software.optimization_tomcat()
     software.enable_tomcat()
+
+    print("clean all")
+    os.system("rm -rf  " + tmpPath)
 
 if __name__ == '__main__':
     integeration()

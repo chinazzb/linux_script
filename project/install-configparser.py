@@ -18,7 +18,7 @@ def depend():
         checkTarFile = os.path.exists(tarFilePath)
         if checkTarFile:
             break
-    os.system("rm -rf /tmp/python")
+
     os.system("mkdir -p /tmp/python")
     os.system("tar xvf " + tarFilePath + " -C /tmp/python")
     os.system("for i in /tmp/python/*.tar.gz; do tar zxvf $i -C /tmp/python/; done")
@@ -51,9 +51,8 @@ def depend():
 
 def install_configparser():
     depend()
-
-
-
+    #clean dir
+    os.system(" rm -rf /tmp/python")
 
 if __name__ == '__main__':
     install_configparser()

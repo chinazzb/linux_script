@@ -17,6 +17,7 @@ cf.read(confFilePath,encoding="utf-8-sig")
 systemType = cf.get("system","systemType")
 installPath = cf.get("mysql","installPath")
 dbDataDir = cf.get("mysql","dbDataDir")
+configFilePath = cf.get("mysql","configFilePath")
 
 
 class system:
@@ -28,21 +29,23 @@ class system:
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("yum install -y gcc gcc-c++ >/dev/null 2>&1")
+            check = os.system("yum install -y gcc gcc-c++ > /dev/null 2>&1")
             #modify host name
-            os.system("echo " + hostName + "> /etc/hostname")
+            os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/hostname")
 
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++ >/dev/null 2>&1")
+            check = os.system("zypper install -y gcc gcc-c++ /dev/null 2>&1")
             #modify host name
-            os.system("echo " + hostName + "> /etc/HOSTNAME")
-            os.system\
-                ("sysctl -w kernel.hostname=" + hostName)
+            os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/HOSTNAME")
+
+        if 0 != check:
+            print("请检查zypp源 or yum源 是否正常使用")
+            os._exit(3)
 
     @staticmethod
-    def system_firewalld():
+    def firewalld():
         time.sleep(3)
         print("configuring system firewalld.......................")
 
@@ -53,7 +56,8 @@ class system:
             os.system("systemctl start firewalld")
             os.system("systemctl enable firewalld")
             for i in range(len(openPortListSplit)):
-                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp >/dev/null 2>&1")
+                os.system("firewall-cmd --permanent --zone=public "
+                          "--add-port="+openPortListSplit[i] + "/tcp >/dev/null 2>&1")
             os.system("firewall-cmd --reload")
         elif 'SUSE' in systemType:
             firewallFile ="/etc/sysconfig/SuSEfirewall2"
@@ -111,12 +115,12 @@ class mysql:
     def format():
         print("formatting mariadb ..................................")
         time.sleep(3)
-        os.system(installPath+"/scripts/mysql_install_db --user=mysql --basedir=" + installPath + " --datadir="+dbDataDir)
+        os.system(installPath+"/scripts/mysql_install_db --user=mysql --basedir=" + installPath + " --datadir=" + dbDataDir)
         print("done formatted mariadb.................................")
 
     @staticmethod
     def config_file():
-        os.system("/usr/bin/cp -f ./conf/my.cnf /etc/my.cnf")
+        os.system("/usr/bin/cp -f " + configFilePath + " /etc/my.cnf")
 
         basedir = "basedir=" + installPath
         datadir = "datadir=" + dbDataDir
@@ -153,7 +157,7 @@ def replace(file_path, old_str, new_str):
 
 def integeration():
     system.basis()
-    system.system_firewalld()
+    system.firewalld()
     system.createBasis()
 
     mysql.tarFile()

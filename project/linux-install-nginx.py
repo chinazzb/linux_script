@@ -19,11 +19,12 @@ cf = configparser.ConfigParser()
 confFilePath = "./install.conf"
 cf.read(confFilePath,encoding="utf-8-sig")
 
-tarFilePath = cf.get("nginx","tarFilePath")
+tarFilesPath = cf.get("nginx","tarFilesPath")
 tmpPath = cf.get("nginx","tmpPath")
 systemType = cf.get("system","systemType")
 
 class system:
+
     @staticmethod
     def basis():
         hostName = cf.get("system","hostName")
@@ -33,15 +34,14 @@ class system:
             time.sleep(3)
             check = os.system("yum install -y gcc gcc-c++ > /dev/null 2>&1")
             #modify host name
-            os.system("echo " + hostName + "> /etc/hostname")
+            os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/hostname")
 
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
             check = os.system("zypper install -y gcc gcc-c++ /dev/null 2>&1")
             #modify host name
-            os.system("echo " + hostName + "> /etc/HOSTNAME")
-            os.system("sysctl -w kernel.hostname=" + hostName)
+            os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/HOSTNAME")
 
         if 0 != check:
                 print("请检查zypp源 or yum源 是否正常使用")
@@ -53,14 +53,10 @@ class system:
         os.system("useradd -g nginx -s /bin/false nginx")
 
     @staticmethod
-    def tarNginx():
-        os.system("rm -rf " + tmpPath + " && mkdir " + tmpPath)
-        os.system("tar xvf " + tarFilePath + " -C " + tmpPath + " > /dev/null 2>&1")
-        os.system("for i in " + tmpPath + "/nginx/*.tar.gz;do tar zxvf $i -C " + tmpPath +" > /dev/null 2>&1 ;done")
-
-    @staticmethod
     def firewalld():
-        print("starting configure system firewalld......................................")
+        time.sleep(3)
+        print("configuring system firewalld.......................")
+
         openPortList = cf.get("system","openPort")
         openPortListSplit = str(openPortList).split(" ")
         #Centos Redhat
@@ -68,7 +64,8 @@ class system:
             os.system("systemctl start firewalld")
             os.system("systemctl enable firewalld")
             for i in range(len(openPortListSplit)):
-                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp ")
+                os.system("firewall-cmd --permanent --zone=public "
+                          "--add-port="+openPortListSplit[i] + "/tcp >/dev/null 2>&1")
             os.system("firewall-cmd --reload")
         elif 'SUSE' in systemType:
             firewallFile ="/etc/sysconfig/SuSEfirewall2"
@@ -76,20 +73,29 @@ class system:
             os.system("rcSuSEfirewall2 start")
             os.system("chkconfig SuSEfirewall2_init on")
             os.system("chkconfig SuSEfirewall2_setup on")
-        print("configure system firewalld done..................................")
+
+        print("done configure system firewalld")
 
 
 
 class nginxConfig:
+
+    @staticmethod
+    def tarNginx():
+
+        os.system("rm -rf " + tmpPath + " && mkdir " + tmpPath)
+        os.system("for i in " + tarFilesPath + "/*; do tar zxvf $i -C " + tmpPath + "; done")
+
     @staticmethod
     def makeNginx():
         print("starting make nginx ............................................")
+
         nginxInstllPath = cf.get("nginx","installPath")
         os.system("rm -rf " + nginxInstllPath)
         checkConfigure = os.system("cd " + tmpPath +"/nginx-* && ./configure --user=nginx --group=nginx"
                                                     " --prefix=" + nginxInstllPath +
                                                     " --with-stream"
-                                                    " --with-pcre=" + tmpPath + "/pcre-8.41"
+                                                    " --with-pcre=" + tmpPath + "/pcre-8.43"
                                                     " --with-zlib=" + tmpPath + "/zlib-1.2.11 > /dev/null 2>&1")
         if 0 != checkConfigure:
             print("configure nginx fatal error.................................")
@@ -105,7 +111,6 @@ class nginxConfig:
 
         print("starting make nginx ............................................")
 
-
     @staticmethod
     def optimization():
         print("start optimization nginx .........................")
@@ -119,7 +124,7 @@ class nginxConfig:
         os.system("rm -f /etc/nginx")
         os.system("ln -s " + nginxConfigPath + " /etc/nginx")
         os.system("rm -rf " + nginxConfigPath + "/nginx.conf ")
-        os.system("cp " + tmpPath + "/nginx/nginx.conf " + nginxConfigPath)
+        os.system("cp ./conf/nginx/nginx.conf " + nginxConfigPath)
         print("create soft link nginx done ....................")
 
 
@@ -127,9 +132,9 @@ class nginxConfig:
         print("create nginx init.d............................")
         time.sleep(2)
         if "Centos" in systemType or 'Redhat'in systemType:
-            os.system("mv " + tmpPath + "/nginx/nginx /etc/init.d/")
+            os.system("mv ./conf/nginx/nginx /etc/init.d/")
         elif "SUSE" in systemType:
-            os.system("mv " + tmpPath + "/nginx/nginx.suse /etc/init.d/nginx")
+            os.system("mv ./conf/nginx/nginx.suse /etc/init.d/nginx")
         os.system("chmod 755 /etc/init.d/nginx")
         os.system("chkconfig nginx on")
         print("nginx init.d done............................")
@@ -166,7 +171,7 @@ class nginxConfig:
         proxyTomcatList = cf.get("nginx","proxyTomcat")
         proxyTomcatListSplit = str(proxyTomcatList).split(",")
         for i in range(len(proxyTomcatListSplit)):
-            os.system("sed -i '44a\ \tserver " + proxyTomcatListSplit[i] + ";' " + nginxConfigPath + "/nginx.conf")
+            os.system("sed -i '43a\ \tserver " + proxyTomcatListSplit[i] + ";' " + nginxConfigPath + "/nginx.conf")
         print("configure nginx upstream server done .................")
 
         #project type
@@ -200,9 +205,10 @@ def replace(file_path, old_str, new_str):
 def integeration():
     system.basis()
     system.createUserGroup()
-    system.tarNginx()
     system.firewalld()
 
+
+    nginxConfig.tarNginx()
     nginxConfig.makeNginx()
     nginxConfig.optimization()
 
