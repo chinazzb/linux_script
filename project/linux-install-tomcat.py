@@ -45,14 +45,14 @@ class system:
             os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/HOSTNAME")
 
         if 0 != check:
-            print("请检查zypp源 or yum源 是否正常使用")
+            print("check zypp or yum repo")
             os._exit(3)
 
     @staticmethod
     def tarz_tomcat():
         tomcatTarMD5 = "535d83309fd8109f064048b831fd3c9e"
         if not os.path.exists(tarFilesPath):
-            print('请检查配置文件,[tomcat]子项下的 "tomcatFilePath" 是否存在')
+            print('check install.conf [tomcat] "tarFilesPath" does it exist')
             os._exit(4)
 
         #tmp dir
@@ -70,7 +70,7 @@ class system:
         os.system("tar zxvf " + tarFilesPath + "/jdk* -C " + jdkInstallPath)
         jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
         #检查是否已经配置javahome
-        print("开始配置JAVAHOME....................................")
+        print("starting configure JAVAHOME....................................")
         time.sleep(3)
         checkJavaHome = os.system("cat /etc/profile.d/jdkHome.sh | grep JAVA_HOME > /dev/null 2>&1")
         if 0 != checkJavaHome:
@@ -84,9 +84,9 @@ class system:
             profile.write("PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin\n")
             profile.write("export JAVA_HOME JRE_HOME PATH CLASSPATH LD_LIBRARY_PATH\n")
             profile.close()
-            print("JAVAHOME已配置完毕")
+            print("JAVAHOME configured done")
         else:
-            print("JAVAHOME已存在无需配置....................................")
+            print("JAVAHOME exist")
 
     @staticmethod
     def system_firewalld():
@@ -110,25 +110,25 @@ class system:
 class software:
     @staticmethod
     def make_tomcat_apr():
-        print("开始编译tomcat及依赖包.........................................................")
+        print("starting tomcat .........................................................")
         time.sleep(3)
         #tomcat
         os.system("sed -i #RM='$RM'#RM='$RM -f'# " + tmpPath + "/apr-*/configure")
         #make
-        print("开始编译apr............................................................")
+        print("starting make apr............................................................")
         time.sleep(3)
         checkApr = os.system("cd " + tmpPath + "/apr-*"
                                                      " && ./configure --prefix=/usr/local/apr/ > /dev/null 2>&1"
                                                      " && make > /dev/null 2>&1"
                                                      " && make install > /dev/null 2>&1")
         if 0 != checkApr:
-            print("编译apr失败请检查相对应文件")
+            print("make apr failure ...............................")
             os._exit(11)
-        print("apr编译安装完成..........................................................")
+        print("make apr done..........................................................")
 
     @staticmethod
     def make_tomcat_apr_iconv():
-        print("开始编译apr-iconv.......................................................")
+        print("starting make apr-iconv.......................................................")
         time.sleep(3)
         checkAprIconv = os.system("cd "+ tmpPath + "/apr-iconv*"
                                                          " && ./configure --prefix=/usr/local/apr-iconv/"
@@ -136,26 +136,26 @@ class software:
                                                          " && make > /dev/null 2>&1"
                                                          " && make install  > /dev/null 2>&1")
         if 0 != checkAprIconv:
-            print("编译apr-iconv失败请检查相对应文件")
+            print("make apr-iconv failure .....................................")
             os._exit(12)
-        print("apr-iconv编译安装完成...................................................")
+        print("make apr-iconv done...................................................")
 
     @staticmethod
     def make_expat():
-        print("开始编译expat..........................................................")
+        print("staring make expat..........................................................")
         time.sleep(3)
         checkExpat = os.system("cd " + tmpPath + "/expat*"
                                                        " && ./configure --prefix=/usr/local/expat > /dev/null 2>&1"
                                                        " && make > /dev/null 2>&1"
                                                        " && make install > /dev/null 2>&1")
         if 0 != checkExpat:
-            print("编译expat文件失败请检查依赖项")
+            print("make expat failure")
             os._exit(13)
-        print("expat编译安装完成......................................................")
+        print("make expat done......................................................")
 
     @staticmethod
     def make_tomcat_apr_util():
-        print("开始编译apr-util.......................................................")
+        print("staring ake apr-util.......................................................")
         time.sleep(3)
         checkAprUtil = os.system("cd " + tmpPath + "/apr-util* "
                                                          " && ./configure --prefix=/usr/local/apr-util"
@@ -165,14 +165,14 @@ class software:
                                                          " && make > /dev/null 2>&1"
                                                          " && make install  > /dev/null 2>&1")
         if 0 != checkAprUtil:
-            print("编译apr-util失败请检查相对应文件")
+            print("make apr-util failure")
             os._exit(14)
-        print("apr-util编译安装完成.......................................................")
+        print("make apr-util done.......................................................")
 
     @staticmethod
     def make_tomcatNative():
         jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
-        print("开始编译TomcatNative.......................................................")
+        print("staring make TomcatNative.......................................................")
         time.sleep(3)
         os.system("groupadd web && useradd -g web -s /bin/false -M tomcat")
         checkTomcatNative = os.system("cd " + tmpPath + "/apache-tomcat-*/bin/"
@@ -183,9 +183,9 @@ class software:
                                                               " && make > /dev/null 2>&1"
                                                               " && make install  > /dev/null 2>&1")
         if 0 != checkTomcatNative:
-            print("TomcatNative编译失败，请检查对应路径")
+            print("make TomcatNative failure")
             os._exit(14)
-        print("TomcatNative编译安装完成............................................................")
+        print("make TomcatNative done............................................................")
 
     @staticmethod
     def install_tomcat():
@@ -238,7 +238,7 @@ class software:
         os.system("chmod 755 /etc/init.d/tomcat")
         os.system("chkconfig tomcat on")
         time.sleep(6)
-        print("完成tomcat自启动...........................................................")
+        print("tomcat init.d done...........................................................")
 
 
 
