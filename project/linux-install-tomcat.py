@@ -40,7 +40,7 @@ class system:
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++ /dev/null 2>&1")
+            check = os.system("zypper install -y gcc gcc-c++ > /dev/null 2>&1")
             #modify host name
             os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/HOSTNAME")
 

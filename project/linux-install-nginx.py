@@ -22,6 +22,7 @@ cf.read(confFilePath,encoding="utf-8-sig")
 tarFilesPath = cf.get("nginx","tarFilesPath")
 tmpPath = cf.get("nginx","tmpPath")
 systemType = cf.get("system","systemType")
+systemd = cf.get("system","systemd")
 
 class system:
 
@@ -39,7 +40,7 @@ class system:
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++ /dev/null 2>&1")
+            check = os.system("zypper install -y gcc gcc-c++ > /dev/null 2>&1")
             #modify host name
             os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/HOSTNAME")
 
@@ -88,7 +89,7 @@ class nginxConfig:
 
     @staticmethod
     def makeNginx():
-        print("starting make nginx ............................................")
+        print("starting make nginx ..............................................")
 
         nginxInstllPath = cf.get("nginx","installPath")
         os.system("rm -rf " + nginxInstllPath)
@@ -132,10 +133,18 @@ class nginxConfig:
         print("create nginx init.d............................")
         time.sleep(2)
         if "Centos" in systemType or 'Redhat'in systemType:
-            os.system("mv ./conf/nginx/nginx /etc/init.d/")
+            if "0" in systemd:
+                os.system("mv ./conf/nginx/nginx /etc/init.d/")
+                os.system("chmod 755 /etc/init.d/nginx")
+            else:
+                os.system("mv ./conf/nginx/nginx.service /usr/lib/systemd/system/")
         elif "SUSE" in systemType:
-            os.system("mv ./conf/nginx/nginx.suse /etc/init.d/nginx")
-        os.system("chmod 755 /etc/init.d/nginx")
+            if "0" in systemd:
+                os.system("mv ./conf/nginx/nginx /etc/init.d/")
+                os.system("chmod 755 /etc/init.d/nginx")
+            else:
+                os.system("mv ./conf/nginx/nginx.service /usr/lib/systemd/system/")
+
         os.system("chkconfig nginx on")
         print("nginx init.d done............................")
 
@@ -211,6 +220,7 @@ def integeration():
     nginxConfig.tarNginx()
     nginxConfig.makeNginx()
     nginxConfig.optimization()
+    os.system("rm -rf " + tmpPath)
 
 
 if __name__ == '__main__':

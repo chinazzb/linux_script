@@ -15,6 +15,7 @@ confFilePath = "./install.conf"
 cf.read(confFilePath,encoding="utf-8-sig")
 
 systemType = cf.get("system","systemType")
+systemd = cf.get("system","systemd")
 installPath = cf.get("mysql","installPath")
 dbDataDir = cf.get("mysql","dbDataDir")
 configFilePath = cf.get("mysql","configFilePath")
@@ -36,7 +37,7 @@ class system:
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++ /dev/null 2>&1")
+            check = os.system("zypper install -y gcc gcc-c++ > /dev/null 2>&1")
             #modify host name
             os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/HOSTNAME")
 
