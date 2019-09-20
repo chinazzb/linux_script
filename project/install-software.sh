@@ -13,7 +13,8 @@ function mainMenu {
  echo -e "\t6. installation git v2.x"
  echo -e "\t7. installation docker"
  echo -e "\t8. installation keepalived"
- echo -e "\t9. installation project"
+ echo -e "\t9. configure security sudo"
+ echo -e "\t10. installation project"
  echo -e "\t0. Exit menu"
  echo -en "\tEnter an option:"
  read  option 
@@ -76,6 +77,8 @@ do
  8)
   shell ./script/linux-install-keepalived.sh ;;
  9)
+  shell ./script/linux-security-sudo.sh ;;
+ 10)
   projectWhile ;;
  *)
  clear

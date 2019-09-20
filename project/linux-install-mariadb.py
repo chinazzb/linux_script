@@ -134,8 +134,10 @@ class mysql:
     def init():
         print("mariadb init.d............................")
         time.sleep(3)
-
-        os.system("cp " + installPath + "/support-files/systemd/mariadb.service /usr/lib/systemd/system/")
+        if "0" in systemd:
+            os.system()
+        else:
+            os.system("cp " + installPath + "/support-files/systemd/mariadb.service /usr/lib/systemd/system/")
 
         os.system("systemctl enable mariadb")
         print("done mariadb init.d.......................")
