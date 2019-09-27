@@ -85,7 +85,7 @@ class nginxConfig:
     def tarNginx():
 
         os.system("rm -rf " + tmpPath + " && mkdir " + tmpPath)
-        os.system("for i in " + tarFilesPath + "/*; do tar zxvf $i -C " + tmpPath + "; done")
+        os.system("for i in " + tarFilesPath + "/*.tar.gz; do tar zxvf $i -C " + tmpPath + " > /dev/null 2>&1; done")
 
     @staticmethod
     def makeNginx():
@@ -134,16 +134,16 @@ class nginxConfig:
         time.sleep(2)
         if "Centos" in systemType or 'Redhat'in systemType:
             if "0" in systemd:
-                os.system("mv ./conf/nginx/nginx /etc/init.d/")
+                os.system("cp ./conf/nginx/nginx /etc/init.d/")
                 os.system("chmod 755 /etc/init.d/nginx")
             else:
-                os.system("mv ./conf/nginx/nginx.service /usr/lib/systemd/system/")
+                os.system("cp ./conf/nginx/nginx.service /usr/lib/systemd/system/")
         elif "SUSE" in systemType:
             if "0" in systemd:
-                os.system("mv ./conf/nginx/nginx /etc/init.d/")
+                os.system("cp ./conf/nginx/nginx /etc/init.d/")
                 os.system("chmod 755 /etc/init.d/nginx")
             else:
-                os.system("mv ./conf/nginx/nginx.service /usr/lib/systemd/system/")
+                os.system("cp ./conf/nginx/nginx.service /usr/lib/systemd/system/")
 
         os.system("chkconfig nginx on")
         print("nginx init.d done............................")

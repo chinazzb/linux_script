@@ -14,7 +14,6 @@
 import os
 import configparser
 import time
-import hashlib
 
 cf = configparser.ConfigParser()
 confFilePath = "./install.conf"
@@ -35,29 +34,20 @@ class system:
             print(systemType + " system.................................")
             time.sleep(3)
             check = os.system("")
-            os.system("echo "+hostName+" > /etc/hostname")
+            os.system("echo " + hostName + " > /etc/hostname")
 
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
             check = os.system("zypper in -y gcc gcc-c++ kernel-source pam glibc-locale libstdc++-devel-32bit")
-            os.system("echo "+hostName+" > /etc/HOSTNAME")
+            os.system("echo " + hostName + " > /etc/HOSTNAME")
             os.system("sysctl -w kernel.hostname=" + hostName)
 
         if 0 != check:
             print("check zypp or yum repolist")
             os._exit(3)
 
-    @staticmethod
-    def createUserGroup():
-        os.system("groupadd -g 901 db2iadm1")
-        os.system("groupadd -g 902 db2fadm1")
-        os.system("groupadd -g 903 dasadm1")
-        os.system("useradd -g db2iadm1 -u 801 -d /home/db2inst1 -m  db2inst1")
-        os.system("useradd -g db2fadm1 -u 802 -d /home/db2fenc1 -m  db2fenc1")
-        os.system("useradd -g dasadm1 -u 803 -d /home/dasadm1 -m  dasusr1")
-        dbPassword = cf.get("db2","db_pass")
-        os.system("echo " + dbPassword + " | passwd --stdin db2inst1")
+
 
     @staticmethod
     def firewalld():
@@ -79,28 +69,60 @@ class system:
             os.system("chkconfig SuSEfirewall2_setup on")
         
 
-class db2config:
+class db2:
+
+
+    @staticmethod
+    def createUserGroup():
+        print("starting create user group..........................................")
+
+        check = os.system("groupadd -g 901 db2iadm1")
+        check += os.system("groupadd -g 902 db2fadm1")
+        check += os.system("groupadd -g 903 dasadm1")
+        check += os.system("useradd -g db2iadm1 -u 801 -d /home/db2inst1 -m  db2inst1")
+        check += os.system("useradd -g db2fadm1 -u 802 -d /home/db2fenc1 -m  db2fenc1")
+        check += os.system("useradd -g dasadm1 -u 803 -d /home/dasadm1 -m  dasusr1")
+        dbPassword = cf.get("db2","dbPass")
+        #check += os.system("echo " + dbPassword + " | passwd --stdin db2inst1")
+
+        if 0 != check:
+            print("create user group db2 failure.................................")
+            os._exit(10)
+
+        print("done create user group..........................................")
+
 
     @staticmethod
     def tardb2():
-        db2tarFile = cf.get("db2","tarFilePath")
-        if not os.path.exists(db2tarFile):
+        print("starting unpacking db2 .....................................")
+
+        tarFilePath = cf.get("db2","tarFilePath")
+        if not os.path.exists(tarFilePath):
             print("")
             os._exit(2)
-        checkTardb2 = os.system("tar zxvf " + db2tarFile + " -C /opt")
+        checkTardb2 = os.system("tar zxvf " + tarFilePath + " -C /opt > /dev/null 2>&1")
         if 0 != checkTardb2:
-            print("请检查此文件为tar.gz压缩包!.................................................")
-            os._exit(3)
+            print("unpacking db2 failure...................................................")
+            os._exit(11)
+
+        print("done unpacking db2 ....................................")
 
     @staticmethod
     def db2Install():
-        os.system("/opt/server_t/db2_install -b /opt/ibm/db2/V10.5 -p SERVER")
-        os.system("/opt/ibm/db2/V10.5/instance/dascrt -u dasusr1")
-        os.system("/opt/ibm/db2/V10.5/instance/db2icrt -a server -u db2fenc1 db2inst1")
-        os.system('su - db2inst1 -c "db2set DB2COMM=TCPIP"')
-        os.system('su - db2inst1 -c "db2 update dbm cfg using SVCENAME 50000"')
-        os.system('su - db2inst1 -c "db2start"')
-        os.system('/opt/ibm/db2/V10.5/instance/db2iauto -on db2inst1')
+        print("staring db2 fome")
+
+        dbPort = cf.get("db2","dbPort")
+        check = os.system("/opt/server_t/db2_install -b /opt/ibm/db2/V10.5 -p SERVER")
+        check += os.system("/opt/ibm/db2/V10.5/instance/dascrt -u dasusr1")
+        check += os.system("/opt/ibm/db2/V10.5/instance/db2icrt -a server -u db2fenc1 db2inst1")
+        check += os.system('su - db2inst1 -c "db2set DB2COMM=TCPIP"')
+        check += os.system('su - db2inst1 -c "db2 update dbm cfg using SVCENAME ' + dbPort + '"')
+        check += os.system('su - db2inst1 -c "db2start"')
+        check += os.system('/opt/ibm/db2/V10.5/instance/db2iauto -on db2inst1')
+
+        if 0 != check:
+            print("db2 install failure............................................")
+            os._exit(12)
 
 def replace(file_path, old_str, new_str):
     try:
@@ -117,11 +139,11 @@ def replace(file_path, old_str, new_str):
 
 def integeration():
     system.basis()
-    system.createUserGroup()
     system.firewalld()
 
-    db2config.tardb2()
-    db2config.db2Install()
+    db2.createUserGroup()
+    db2.tardb2()
+    db2.db2Install()
 
 if __name__ == '__main__':
     integeration()

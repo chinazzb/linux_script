@@ -21,6 +21,7 @@ dbDataDir = cf.get("mysql","dbDataDir")
 configFilePath = cf.get("mysql","configFilePath")
 
 
+
 class system:
 
     @staticmethod
@@ -89,26 +90,25 @@ class mysql:
         check = 0
         os.system("rm -rf " + installPath)
         check = os.system("tar zxvf " + tarFilePath + " -C /usr/local/ > /dev/null 2>&1")
+        os.system("ln -sf `ls /usr/local/ | grep mariadb ` " + installPath)
 
-        os.system("ln -sf `ls /usr/local/ | grep mariadb` " + installPath)
+        if 0 != check:
+            print("unpacking mariadb failure...........................")
+            os._exit(11)
 
         print("done unpack mariadb tarball ...........................")
-
-
-    @staticmethod
-    def configFile():
-
-        time.sleep(3)
-        configFilePath = cf.get("mysql","configFilePath")
-        os.system("mv " + configFilePath + " /etc/")
 
     @staticmethod
     def profile():
         print("setting profile .......................................")
         time.sleep(3)
+        check = 0
+        check += os.system("echo export PATH=$PATH:" + installPath + "/bin > /etc/profile.d/mysql.sh")
+        check += os.system("source /etc/profile.d/mysql.sh")
 
-        os.system("echo export PATH=$PATH:" + installPath + "/bin > /etc/profile.d/mysql.sh")
-        os.system("source /etc/profile.d/mysql.sh")
+        if 0 != check:
+            print("mariadb profile def failure ...............................")
+            os._exit(12)
 
         print("done set profile .......................................")
 
@@ -116,31 +116,54 @@ class mysql:
     def format():
         print("formatting mariadb ..................................")
         time.sleep(3)
-        os.system(installPath+"/scripts/mysql_install_db --user=mysql --basedir=" + installPath + " --datadir=" + dbDataDir)
+        check = os.system(installPath+"/scripts/mysql_install_db --user=mysql --basedir=" + installPath + " --datadir=" + dbDataDir )
+
+        if 0 != check:
+            print("mariadb format failure .............................")
+            os._exit(13)
+
         print("done formatted mariadb.................................")
 
     @staticmethod
     def config_file():
-        os.system("/usr/bin/cp -f " + configFilePath + " /etc/my.cnf")
-
+        check = 0
+        check += os.system("/usr/bin/cp -f " + configFilePath + " /etc/my.cnf")
+        check += os.system("mkdir -p /etc/my.cnf.d/")
         basedir = "basedir=" + installPath
         datadir = "datadir=" + dbDataDir
         #basedir
-        os.system('sed -i "5c ' + basedir + '" /etc/my.cnf')
+        check += os.system('sed -i "5c ' + basedir + '" /etc/my.cnf')
         #datadir
-        os.system('sed -i "6c ' + datadir + '" /etc/my.cnf')
+        check += os.system('sed -i "6c ' + datadir + '" /etc/my.cnf')
+
+        if 0 != check:
+            print("config_file def failure ..............................")
+            os._exit(14)
+
+        print("done mariadb config file ...............................")
 
     @staticmethod
     def init():
         print("mariadb init.d............................")
         time.sleep(3)
+        check = 0
         if "0" in systemd:
-            os.system()
+            basedir = "basedir=" + installPath
+            datadir = "datadir=" + dbDataDir
+            check += os.system("cp " + installPath + "/support-files/mysql.server /etc/init.d/mysql")
+            check += os.system('sed -i "45c ' + basedir + '" /etc/init.d/mysql')
+            #datadir
+            check += os.system('sed -i "46c ' + datadir + '" /etc/init.d/mysql')
         else:
-            os.system("cp " + installPath + "/support-files/systemd/mariadb.service /usr/lib/systemd/system/")
+            check += os.system("cp " + installPath + "/support-files/systemd/mariadb.service /usr/lib/systemd/system/mysql.service")
 
-        os.system("systemctl enable mariadb")
-        print("done mariadb init.d.......................")
+        check += os.system("chkconfig mysql on")
+
+        if 0 != check:
+            print("mariadb init def failure ...........................................")
+            os._exit(15)
+
+        print("done mariadb init.d............................")
 
 
 
@@ -166,7 +189,7 @@ def integeration():
     mysql.tarFile()
     mysql.profile()
     mysql.format()
-    #mysql.configFile()
+    mysql.config_file()
     mysql.init()
 
 if __name__ == '__main__':

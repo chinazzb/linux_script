@@ -14,7 +14,8 @@ function mainMenu {
  echo -e "\t7. installation docker"
  echo -e "\t8. installation keepalived"
  echo -e "\t9. configure security sudo"
- echo -e "\t10. installation project"
+ echo -e "\t10 installation mongodb v4.2.0"
+ echo -e "\t11. installation project"
  echo -e "\t0. Exit menu"
  echo -en "\tEnter an option:"
  read  option 
@@ -71,14 +72,16 @@ do
  5)
   /usr/bin/python ./script/linux-install-mariadb.py ;;
  6)
-  shell ./script/linux-install-git.sh ;;
+  sh ./script/linux-install-git.sh ;;
  7)
-  shell ./script/linux-install-docker.sh ;;
+  /usr/bin/python ./script/linux-install-docker.py ;;
  8)
-  shell ./script/linux-install-keepalived.sh ;;
+  /usr/bin/python ./script/linux-install-keepalived.py ;;
  9)
-  shell ./script/linux-security-sudo.sh ;;
+  sh ./script/linux-security-sudo.sh ;;
  10)
+  /usr/bin/python ./script/linux-install-mongodb.py ;;
+ 11)
   projectWhile ;;
  *)
  clear

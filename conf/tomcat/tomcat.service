@@ -1,0 +1,17 @@
+[Unit]
+Description=Apache Tomcat 8
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=tomcat
+Group=tomcat
+
+EnvironmentFile=/etc/sysconfig/tomcat
+
+ExecStart=/usr/local/tomcat/bin/startup.sh
+ExecStop=/usr/local/tomcat/bin/shutdown.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

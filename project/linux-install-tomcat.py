@@ -33,15 +33,15 @@ class system:
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("yum install -y gcc gcc-c++ > /dev/null 2>&1")
+            check += os.system("yum install -y gcc gcc-c++ > /dev/null 2>&1")
             #modify host name
             os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/hostname")
 
         elif 'SUSE' in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
-            check = os.system("zypper install -y gcc gcc-c++ > /dev/null 2>&1")
-            #modify host name
+            check += os.system("zypper install -y gcc gcc-c++ > /dev/null 2>&1")
+            #modify host namem
             os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/HOSTNAME")
 
         if 0 != check:
@@ -49,25 +49,45 @@ class system:
             os._exit(3)
 
     @staticmethod
+    def firewalld():
+        openPortList = cf.get("system","openPort")
+        openPortListSplit = str(openPortList).split(" ")
+        #Centos Redhat
+        if 'Centos' in systemType or 'Redhat' in systemType:
+            os.system("systemctl start firewalld")
+            os.system("systemctl enable firewalld")
+            for i in range(len(openPortListSplit)):
+                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp ")
+            os.system("firewall-cmd --reload")
+        elif 'SUSE' in systemType:
+            firewallFile ="/etc/sysconfig/SuSEfirewall2"
+            replace(firewallFile,'FW_SERVICES_EXT_TCP=""','FW_SERVICES_EXT_TCP="'+openPortList+'"')
+            os.system("rcSuSEfirewall2 start")
+            os.system("chkconfig SuSEfirewall2_init on")
+            os.system("chkconfig SuSEfirewall2_setup on")
+
+
+class software:
+
+    @staticmethod
     def tarz_tomcat():
-        tomcatTarMD5 = "535d83309fd8109f064048b831fd3c9e"
         if not os.path.exists(tarFilesPath):
             print('check install.conf [tomcat] "tarFilesPath" does it exist')
             os._exit(4)
 
         #tmp dir
         check = 0
-        check += os.system("mkdir " + tmpPath)
+        check += os.system(" rm -rf " + tmpPath + " && mkdir " + tmpPath)
         check += os.system("for i in `ls " + tarFilesPath + "/*.tar.gz | grep -v jdk`; do tar zxvf $i -C " + tmpPath + " > /dev/null 2>&1;done")
         check += os.system("tar xvf " + tarFilesPath + "/expat* -C " + tmpPath + " > /dev/null 2>&1")
         if 0 != check:
-            print("unzip tomcat-apr.tar fatal................................")
+            print("unzip tomcat failure .........................................................")
 
     @staticmethod
     def jdk_configure():
         os.system("rm -rf " + jdkInstallPath)
         os.system("mkdir " + jdkInstallPath)
-        os.system("tar zxvf " + tarFilesPath + "/jdk* -C " + jdkInstallPath)
+        os.system("tar zxvf " + tarFilesPath + "/jdk* -C " + jdkInstallPath + " > /dev/null 2>&1")
         jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
         #检查是否已经配置javahome
         print("starting configure JAVAHOME....................................")
@@ -89,41 +109,21 @@ class system:
             print("JAVAHOME exist")
 
     @staticmethod
-    def system_firewalld():
-        openPortList = cf.get("system","openPort")
-        openPortListSplit = str(openPortList).split(" ")
-        #Centos Redhat
-        if 'Centos' in systemType or 'Redhat' in systemType:
-            os.system("systemctl start firewalld")
-            os.system("systemctl enable firewalld")
-            for i in range(len(openPortListSplit)):
-                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp ")
-            os.system("firewall-cmd --reload")
-        elif 'SUSE' in systemType:
-            firewallFile ="/etc/sysconfig/SuSEfirewall2"
-            replace(firewallFile,'FW_SERVICES_EXT_TCP=""','FW_SERVICES_EXT_TCP="'+openPortList+'"')
-            os.system("rcSuSEfirewall2 start")
-            os.system("chkconfig SuSEfirewall2_init on")
-            os.system("chkconfig SuSEfirewall2_setup on")
-
-
-class software:
-    @staticmethod
     def make_tomcat_apr():
-        print("starting tomcat .........................................................")
-        time.sleep(3)
-        #tomcat
-        os.system("sed -i #RM='$RM'#RM='$RM -f'# " + tmpPath + "/apr-*/configure")
-        #make
         print("starting make apr............................................................")
+
+        time.sleep(5)
+        checkApr = os.system('sed -i "#RM=\'$RM\'#RM=\'$RM -f\'#" ' + tmpPath + '/apr-*/configure')
+        #make
         time.sleep(3)
-        checkApr = os.system("cd " + tmpPath + "/apr-*"
+        checkApr += os.system("cd " + tmpPath + "/apr-*"
                                                      " && ./configure --prefix=/usr/local/apr/ > /dev/null 2>&1"
                                                      " && make > /dev/null 2>&1"
                                                      " && make install > /dev/null 2>&1")
         if 0 != checkApr:
-            print("make apr failure ...............................")
+            print("make apr failure ..................................")
             os._exit(11)
+
         print("make apr done..........................................................")
 
     @staticmethod
@@ -171,39 +171,46 @@ class software:
 
     @staticmethod
     def make_tomcatNative():
-        jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
         print("staring make TomcatNative.......................................................")
+
+        jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
         time.sleep(3)
-        os.system("groupadd web && useradd -g web -s /bin/false -M tomcat")
-        checkTomcatNative = os.system("cd " + tmpPath + "/apache-tomcat-*/bin/"
+        check = 0
+        check += os.system("groupadd tomcat && useradd -g tomcat -s /sbin/nologin -M tomcat")
+        check += os.system("cd " + tmpPath + "/apache-tomcat-*/bin/"
                                                               " && tar zxvf tomcat-native.tar.gz > /dev/null 2>&1"
                                                               " && cd tomcat-native-*/native"
                                                               " && ./configure --with-apr=/usr/local/apr/bin/apr-1-config"
                                                               " --with-java-home=" + jdkHome + " > /dev/null 2>&1 "
                                                               " && make > /dev/null 2>&1"
                                                               " && make install  > /dev/null 2>&1")
-        if 0 != checkTomcatNative:
-            print("make TomcatNative failure")
+        if 0 != check:
+            print("make TomcatNative failure.......................................................")
             os._exit(14)
+
         print("make TomcatNative done............................................................")
 
     @staticmethod
     def install_tomcat():
-        print("安装 tomcat...................................................................")
+        print("starting install tomcat...................................................................")
+
         time.sleep(3)
-        check = 1
-        checkAprSoftLink = os.system("cp -R /usr/local/apr/lib/* /usr/lib64"
-                                    " && cp -R /usr/local/apr/lib/* /usr/lib")
+        check = 0
+        checkAprSoftLink = os.system("cp -R /usr/local/apr/lib/* /usr/lib64  &&"
+                                    " cp -R /usr/local/apr/lib/* /usr/lib")
 
-        os.system("rm -rf " + installPath)
+        check += os.system("rm -rf " + installPath)
         #soft link
-        os.system("mv /tmp/tomcat/apache-tomcat* /usr/local/")
-        os.system("ln -s /usr/local/apache-tomcat* " + installPath)
-        os.system("rm -rf /etc/tomcat"
-                  " && ln -s /usr/local/apache-tomcat*/conf /etc/tomcat")
+        check += os.system("mv /tmp/tomcat/apache-tomcat* /usr/local/")
+        check += os.system("ln -s /usr/local/apache-tomcat* " + installPath)
+        check += os.system("rm -rf /etc/tomcat &&"
+                  " ln -s /usr/local/apache-tomcat*/conf /etc/tomcat")
 
-        os.system("rm -rf /var/log/tomcat"
-                  " && ln -s /usr/local/apache-tomcat*/logs /var/log/tomcat")
+        check += os.system("rm -rf /var/log/tomcat  &&"
+                  " ln -s /usr/local/apache-tomcat*/logs /var/log/tomcat")
+        if 0 != check:
+            print("install tomcat failure..................................................")
+
         print("install tomcat done.................................................................")
 
     @staticmethod
@@ -213,7 +220,7 @@ class software:
 
         #server
         os.system("rm -rf /etc/tomcat/server.xml")
-        os.system("mv  " + tmpPath + "/tomcat-apr/server.xml /etc/tomcat/")
+        os.system("cp ./conf/tomcat/server.xml /etc/tomcat/")
 
         minThread = 'minSpareThreads=" '+ cf.get("tomcat","minThread") + '"'
         maxThread = 'maxThreads="'+ cf.get("tomcat","maxThread") + '"'
@@ -223,22 +230,33 @@ class software:
 
         #tomcat-users
         os.system("rm -rf /etc/tomcat/tomcat-users.xml")
-        os.system("mv  " + tmpPath + "/tomcat-apr/tomcat-users.xml /etc/tomcat/")
+        os.system("cp ./conf/tomcat/tomcat-users.xml /etc/tomcat/")
 
         #tomcat manager
-        os.system("rm -rf " + tomcatProject+"*")
-        os.system("cp -r " + tmpPath + "/tomcat-apr/manager/ " + tomcatProject)
-        os.system("chown -hR tomcat:web {/usr/local/apache-tomcat*," + installPath + "}")
+        os.system("rm -rf " + tomcatProject + "/*")
+        os.system("cp -r ./conf/tomcat/manager/ " + tomcatProject)
+        os.system("chown -hR tomcat:tomcat {/usr/local/apache-tomcat*," + installPath + "}")
 
         print("tomcat optimization done...........................................................")
 
     @staticmethod
     def enable_tomcat():
-        os.system("cp " + tmpPath + "/tomcat-apr/tomcat /etc/init.d/tomcat")
-        os.system("chmod 755 /etc/init.d/tomcat")
-        os.system("chkconfig tomcat on")
+        systemd = cf.get("system","systemd")
+        check = 0
+
+        if "0" in systemd:
+            check += os.system("cp ./conf/tomcat/tomcat.init /etc/init.d/tomcat")
+            check += os.system("chmod 755 /etc/init.d/tomcat")
+        else:
+            check += os.system("cp ./conf/tomcat/tomcat /etc/sysconfig/tomcat")
+            check += os.system("cp ./conf/tomcat/tomcat.service /usr/lib/systemd/system/")
+
+        check += os.system("chkconfig tomcat on")
+
+        if 0 != check:
+            print("init.d tomcat failure ......................................")
         time.sleep(6)
-        print("tomcat init.d done...........................................................")
+        print("done init.d tomcat...........................................................")
 
 
 
@@ -258,10 +276,12 @@ def replace(file_path, old_str, new_str):
 def integeration():
     #system
     system.basis()
-    system.tarz_tomcat()
-    system.jdk_configure()
+    system.firewalld()
+
 
     #software
+    software.tarz_tomcat()
+    software.jdk_configure()
     software.make_tomcat_apr()
     software.make_tomcat_apr_iconv()
     software.make_expat()
@@ -271,7 +291,7 @@ def integeration():
     software.optimization_tomcat()
     software.enable_tomcat()
 
-    print("clean all")
+    print("clean all................................................")
     os.system("rm -rf  " + tmpPath)
 
 if __name__ == '__main__':

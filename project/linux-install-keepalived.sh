@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-# install keepalived
-
-set -e
-
-yum install gcc gcc-c++ openssl-devel libnl libnl-devel libnfnetlink-devel net-tools -y || zypper install -y openssl-devel gcc gcc-c++ net-tools
-
+#install keepalived
+set -e 
+yum install -y gcc gcc-c++ openssl-devel libnl libnl-devel libnfnetlink-devel net-tools || zypper install -y  gcc gcc-c++ openssl libopenssl-devel
 #work dir
 workdir=`pwd`
 
@@ -20,10 +17,11 @@ sudo systemctl enable keepalived
 cp ./conf/keepalived/http_check.sh /usr/local/bin/
 
 #modify inetrface name and
-sed
+#sed
 
 #firewall configure
 #systemctl start firewalld || syystemctl start SuSEfirewall2
 #firewall-cmd --add-rich-rule='rule protocol value="vrrp" accept' --permanent || 
 #firewall-cmd --reload
+
 
