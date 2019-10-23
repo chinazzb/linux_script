@@ -4,7 +4,7 @@
 #organization: China Poka
 #Author: Duan Yu
 #mail:chinazzbcn@gmail.com or cn-duanyu@foxmail.com
-#Date: 2019/4/18
+#Date: 2019/10/23
 
 import os
 import configparser
@@ -27,7 +27,7 @@ class system:
     @staticmethod
     def basis():
         hostName = cf.get("system","hostName")
-        check = 1
+        check = 0
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
@@ -90,7 +90,7 @@ class mysql:
         check = 0
         os.system("rm -rf " + installPath)
         check = os.system("tar zxvf " + tarFilePath + " -C /usr/local/ > /dev/null 2>&1")
-        os.system("ln -sf `ls /usr/local/ | grep mariadb ` " + installPath)
+        os.system("ln -sf /usr/local/`ls /usr/local/ | grep mariadb ` " + installPath)
 
         if 0 != check:
             print("unpacking mariadb failure...........................")
