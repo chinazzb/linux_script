@@ -10,7 +10,7 @@ import os
 import configparser
 import time
 
-cf = configparser.ConfigParser()
+cf = configparser.RawConfigParser()
 confFilePath = "./install.conf"
 cf.read(confFilePath,encoding="utf-8-sig")
 
@@ -116,6 +116,7 @@ class mysql:
     def format():
         print("formatting mariadb ..................................")
         time.sleep(3)
+        os.system("mkdir /var/log/mariadb/ && chown mysql.mysql /var/log/mariadb")
         check = os.system(installPath+"/scripts/mysql_install_db --user=mysql --basedir=" + installPath + " --datadir=" + dbDataDir )
 
         if 0 != check:
@@ -132,9 +133,9 @@ class mysql:
         basedir = "basedir=" + installPath
         datadir = "datadir=" + dbDataDir
         #basedir
-        check += os.system('sed -i "5c ' + basedir + '" /etc/my.cnf')
+        check += os.system('sed -i "6c ' + basedir + '" /etc/my.cnf')
         #datadir
-        check += os.system('sed -i "6c ' + datadir + '" /etc/my.cnf')
+        check += os.system('sed -i "7c ' + datadir + '" /etc/my.cnf')
 
         if 0 != check:
             print("config_file def failure ..............................")
@@ -150,14 +151,14 @@ class mysql:
         if "0" in systemd:
             basedir = "basedir=" + installPath
             datadir = "datadir=" + dbDataDir
-            check += os.system("cp " + installPath + "/support-files/mysql.server /etc/init.d/mysql")
+            check += os.system("/usr/bin/cp -f " + installPath + "/support-files/mysql.server /etc/init.d/mysql")
             check += os.system('sed -i "45c ' + basedir + '" /etc/init.d/mysql')
             #datadir
             check += os.system('sed -i "46c ' + datadir + '" /etc/init.d/mysql')
         else:
-            check += os.system("cp " + installPath + "/support-files/systemd/mariadb.service /usr/lib/systemd/system/mysql.service")
+            check += os.system("/usr/bin/cp -f " + installPath + "/support-files/systemd/mariadb.service /usr/lib/systemd/system/mysql.service")
 
-        check += os.system("chkconfig mysql on")
+        check += os.system("chkconfig mysql off && chkconfig mysql on")
 
         if 0 != check:
             print("mariadb init def failure ...........................................")
@@ -165,7 +166,22 @@ class mysql:
 
         print("done mariadb init.d............................")
 
+    @staticmethod
+    def format_db():
+        dbName = cf.get("mysql","dbName")
+        dbUser = cf.get("mysql","dbUser")
+        dbPass = cf.get("mysql","dbPass")
+        dbGrantHost = cf.get("mysql","dbGrantHost")
 
+        print("starting format db .......................")
+        os.system("service mysql start")
+        time.sleep(3)
+        check = os.system("./script/project-format-db.sh " + dbName + " " + dbUser + " " + dbPass + " " + dbGrantHost)
+        if 0 != check:
+            print("format db failure..........................")
+            os._exit(16)
+
+        print("done format db .................................................")
 
 def replace(file_path, old_str, new_str):
 
@@ -191,6 +207,7 @@ def integeration():
     mysql.format()
     mysql.config_file()
     mysql.init()
+    mysql.format_db()
 
 if __name__ == '__main__':
     integeration()

@@ -4,7 +4,7 @@
 #organization: China Poka
 #Author: Duan Yu
 #mail:chinazzbcn@gmail.com or cn-duanyu@foxmail.com
-#Date: 2019/9/25
+#Date: 2019/11/27
 
 
 import os
@@ -18,15 +18,16 @@ cf.read(confFilePath, encoding="utf-8-sig")
 systemType = cf.get("system","systemType")
 systemd = cf.get("system","systemd")
 
-installPath = cf.get("docker","installPath")
+installPath = cf.get("mongodb","installPath")
 
 
 class system:
 
     @staticmethod
     def basis():
+        print("staring install gcc........")
         hostName = cf.get("system","hostName")
-        check = 1
+        check = 0
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
@@ -45,6 +46,7 @@ class system:
             print("请检查zypp源 or yum源 是否正常使用")
             os._exit(3)
 
+        print("done installed ...................")
     @staticmethod
     def firewall():
         time.sleep(3)
@@ -67,7 +69,7 @@ class system:
             os.system("chkconfig SuSEfirewall2_init on")
             os.system("chkconfig SuSEfirewall2_setup on")
 
-    print("done configure system firewalld")
+        print("done configure system firewalld")
 
 
 class mongodb:
@@ -77,10 +79,11 @@ class mongodb:
         systemType =  cf.get("system","systemType")
         if "Centos" in systemType or "Redhat" in systemType:
             systemType = "RHEL"
-        tarFilePath = cf.get("mongodb","tarFilePath")
 
-        check = os.system("tar zxvf ./software/`ls ./software/ | grep mongodb | grep -i " + systemType + "`  -C /usr/local/ > /dev/null 2>&1")
-        check += os.system("ln -sf `ls /usr/local/ | grep mongodb` " + installPath)
+        check = os.system("tar zxvf ./software/mongod/`ls ./software/mongod/ | grep mongodb |"
+                          " grep -i " + systemType + "`  -C /usr/local/ > /dev/null 2>&1")
+        check += os.system("ln -sf /usr/local/`ls /usr/local/ | grep mongodb` /usr/local/mongodb ")
+        #os.system("mv /usr/local/mongo* " + installPath)
 
         if 0 != check:
             print("unpacking mongodb failure..........................................")
@@ -103,11 +106,10 @@ class mongodb:
     def format():
         print("staring format mongodb.............................")
 
-        check = os.system("groupadd mongod"
-                          " && useradd -g mongod -s /sbin/nologin mongod")
+        os.system("groupadd mongod && useradd -g mongod -s /sbin/nologin mongod")
 
         logPath = cf.get("mongodb","logPath")
-        check += os.system("mkdir -p " + logPath +
+        check = os.system("mkdir -p " + logPath +
                            " && chown mongod:mongod " + logPath)
         if 0 != check:
             print("create format failure .........................................")
@@ -120,10 +122,10 @@ class mongodb:
         print("staring configure mongodb.....................................")
 
         dbPath = cf.get("mongodb","dbPath")
-        check = os.system("cp ./conf/mongodb/mongod.conf /etc/")
+        check = os.system("/usr/bin/cp -f ./conf/mongodb/mongod.conf /etc/")
         check += os.system("mkdir -p " + dbPath +
-                            " && /usr/bin/chown mongod:mongod " + dbPath +
-                            " && sed -i '14s#/var/lib/mongo#" + dbPath + "#' /etc/mongod.conf")
+                           " && /usr/bin/chown mongod:mongod " + dbPath +
+                           " && sed -i '14s#/var/lib/mongo#" + dbPath + "#' /etc/mongod.conf")
 
         bindIp = cf.get("mongodb","bindIp")
         check += os.system("sed -i '29s#127.0.0.1#" + bindIp + "#' /etc/mongod.conf")
@@ -138,8 +140,9 @@ class mongodb:
     def init():
         print("staring init.d mongodb.......................................")
 
-        check = os.system("cp ./conf/mongodb/mongod.service /usr/lib/systemd/system/ && systemctl enable mongod")
-
+        check = os.system("/usr/bin/cp -f ./conf/mongodb/mongod.service /usr/lib/systemd/system/ "
+                          " && systemctl enable mongod")
+        #os.system('sed -i "11s#/usr/local/mongodb#' + installPath + '#" /usr/lib/systemd/system/mongod.service')
         if 0 != check:
             print("init.d mongodb failure .......................................")
             os._exit(15)

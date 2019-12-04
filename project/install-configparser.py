@@ -12,11 +12,12 @@ import sys
 
 def depend():
     #tar file
-    os.system("yum install -y unzip")
+    os.system("rpm -ivh ./tools/unzip-6.0-20.el7.x86_64.rpm")
     while True:
         tarFilePath = sys.argv[1]
         checkTarFile = os.path.exists(tarFilePath)
         if checkTarFile:
+            print("not file")
             break
 
     os.system("mkdir -p /tmp/python")

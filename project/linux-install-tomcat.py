@@ -3,8 +3,7 @@
 #python: 2.7.x
 #organization: China Poka#Author: Duan Yu
 #mail:chinazzbcn@gmail.com or cn-duanyu@foxmail.com
-#Date:
-#version: 0.9
+#Date:2019/11/25
 
 #SUSE11
 
@@ -29,11 +28,12 @@ class system:
     @staticmethod
     def basis():
         hostName = cf.get("system","hostName")
-        check = 1
+        check = 0
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
             check += os.system("yum install -y gcc gcc-c++ > /dev/null 2>&1")
+            os.system("rpm -ivh ./tools/bzip2-1.0.6-13.el7.x86_64.rpm")
             #modify host name
             os.system("sysctl -w kernel.hostname=" + hostName + " && hostname > /etc/hostname")
 
@@ -57,7 +57,7 @@ class system:
             os.system("systemctl start firewalld")
             os.system("systemctl enable firewalld")
             for i in range(len(openPortListSplit)):
-                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp ")
+                os.system("firewall-cmd --permanent --zone=public --add-port="+openPortListSplit[i]+"/tcp >/dev/null 2>&1")
             os.system("firewall-cmd --reload")
         elif 'SUSE' in systemType:
             firewallFile ="/etc/sysconfig/SuSEfirewall2"
@@ -89,29 +89,12 @@ class software:
         os.system("mkdir " + jdkInstallPath)
         os.system("tar zxvf " + tarFilesPath + "/jdk* -C " + jdkInstallPath + " > /dev/null 2>&1")
         jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
-        #检查是否已经配置javahome
-        print("starting configure JAVAHOME....................................")
-        time.sleep(3)
-        checkJavaHome = os.system("cat /etc/profile.d/jdkHome.sh | grep JAVA_HOME > /dev/null 2>&1")
-        if 0 != checkJavaHome:
-            profile = open("/etc/profile.d/jdkHome.sh","a")
-            profile.write("JAVA_HOME=" + jdkHome + "\n")
-            profile.write("JRE_HOME=$JAVA_HOME/jre\n")
-            profile.write("CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib\n")
-            profile.write("LD_LIBRARY_PATH=/usr/local/apr/lib:$LD_LIBRARY_PATH\n")
-            profile.write("CATALINA_HOME=" + installPath + "\n")
-            profile.write("CATALINA_BASE=" + installPath + "\n")
-            profile.write("PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin\n")
-            profile.write("export JAVA_HOME JRE_HOME PATH CLASSPATH LD_LIBRARY_PATH\n")
-            profile.close()
-            print("JAVAHOME configured done")
-        else:
-            print("JAVAHOME exist")
+        os.system("sed -i '1c JAVA_HOME="+jdkHome+"' ./conf/tomcat/tomcat")
 
     @staticmethod
     def make_tomcat_apr():
         print("starting make apr............................................................")
-
+        os.system("rm -rf /usr/local/apr")
         time.sleep(5)
         checkApr = os.system('sed -i "#RM=\'$RM\'#RM=\'$RM -f\'#" ' + tmpPath + '/apr-*/configure')
         #make
@@ -129,6 +112,7 @@ class software:
     @staticmethod
     def make_tomcat_apr_iconv():
         print("starting make apr-iconv.......................................................")
+        os.system("rm -rf /usr/local/apr-iconv")
         time.sleep(3)
         checkAprIconv = os.system("cd "+ tmpPath + "/apr-iconv*"
                                                          " && ./configure --prefix=/usr/local/apr-iconv/"
@@ -144,6 +128,7 @@ class software:
     def make_expat():
         print("staring make expat..........................................................")
         time.sleep(3)
+        os.system("rm -rf /usr/local/expat")
         checkExpat = os.system("cd " + tmpPath + "/expat*"
                                                        " && ./configure --prefix=/usr/local/expat > /dev/null 2>&1"
                                                        " && make > /dev/null 2>&1"
@@ -156,6 +141,7 @@ class software:
     @staticmethod
     def make_tomcat_apr_util():
         print("staring ake apr-util.......................................................")
+        os.system("rm -rf /usr/local/apr-util")
         time.sleep(3)
         checkAprUtil = os.system("cd " + tmpPath + "/apr-util* "
                                                          " && ./configure --prefix=/usr/local/apr-util"
@@ -176,7 +162,7 @@ class software:
         jdkHome = jdkInstallPath + "".join(os.listdir(jdkInstallPath))
         time.sleep(3)
         check = 0
-        check += os.system("groupadd tomcat && useradd -g tomcat -s /sbin/nologin -M tomcat")
+        os.system("groupadd tomcat && useradd -g tomcat -s /sbin/nologin -M tomcat")
         check += os.system("cd " + tmpPath + "/apache-tomcat-*/bin/"
                                                               " && tar zxvf tomcat-native.tar.gz > /dev/null 2>&1"
                                                               " && cd tomcat-native-*/native"
@@ -201,13 +187,14 @@ class software:
 
         check += os.system("rm -rf " + installPath)
         #soft link
+        os.system("rm -rf /usr/local/apache-tomcat*")
         check += os.system("mv /tmp/tomcat/apache-tomcat* /usr/local/")
-        check += os.system("ln -s /usr/local/apache-tomcat* " + installPath)
+        check += os.system("ln -sf /usr/local/apache-tomcat* " + installPath)
         check += os.system("rm -rf /etc/tomcat &&"
                   " ln -s /usr/local/apache-tomcat*/conf /etc/tomcat")
 
-        check += os.system("rm -rf /var/log/tomcat  &&"
-                  " ln -s /usr/local/apache-tomcat*/logs /var/log/tomcat")
+        check += os.system("rm -f /var/log/tomcat  &&"
+                  " ln -sf /usr/local/apache-tomcat*/logs /var/log/tomcat")
         if 0 != check:
             print("install tomcat failure..................................................")
 

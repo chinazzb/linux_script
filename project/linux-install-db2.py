@@ -4,7 +4,7 @@
 #organization: China Poka
 #Author: Duan Yu
 #mail:chinazzbcn@gmail.com or cn-duanyu@foxmail.com
-#Date: 06-12-2018
+#Date: 2019/10/22
 #version: 0.9
 
 
@@ -29,7 +29,7 @@ class system:
         hosts = hostIp + "    " + hostName
 
         os.system("echo " + hosts +" >> /etc/hosts")
-        check = 1
+        check = 0
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)
@@ -76,13 +76,14 @@ class db2:
     def createUserGroup():
         print("starting create user group..........................................")
 
-        check = os.system("groupadd -g 901 db2iadm1")
-        check += os.system("groupadd -g 902 db2fadm1")
-        check += os.system("groupadd -g 903 dasadm1")
-        check += os.system("useradd -g db2iadm1 -u 801 -d /home/db2inst1 -m  db2inst1")
-        check += os.system("useradd -g db2fadm1 -u 802 -d /home/db2fenc1 -m  db2fenc1")
-        check += os.system("useradd -g dasadm1 -u 803 -d /home/dasadm1 -m  dasusr1")
-        dbPassword = cf.get("db2","dbPass")
+        check = 0
+        os.system("groupadd -g 901 db2iadm1")
+        os.system("groupadd -g 902 db2fadm1")
+        os.system("groupadd -g 903 dasadm1")
+        os.system("useradd -g db2iadm1 -u 801 -d /home/db2inst1 -m  db2inst1")
+        os.system("useradd -g db2fadm1 -u 802 -d /home/db2fenc1 -m  db2fenc1")
+        os.system("useradd -g dasadm1 -u 803 -d /home/dasadm1 -m  dasusr1")
+        #dbPassword = cf.get("db2","dbPass")
         #check += os.system("echo " + dbPassword + " | passwd --stdin db2inst1")
 
         if 0 != check:

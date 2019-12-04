@@ -4,7 +4,7 @@
 #organization: China Poka
 #Author: Duan Yu
 #mail:chinazzbcn@gmail.com or cn-duanyu@foxmail.com
-#Date: 2019/9/23
+#Date: 2019/10/22
 
 
 import configparser
@@ -25,7 +25,7 @@ class system:
     @staticmethod
     def basis():
         hostName = cf.get("system","hostName")
-        check = 1
+        check = 0
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)

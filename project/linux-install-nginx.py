@@ -29,7 +29,7 @@ class system:
     @staticmethod
     def basis():
         hostName = cf.get("system","hostName")
-        check = 1
+        check = 0
         if 'Centos' in systemType or 'Redhat'in systemType:
             print(systemType + " system.................................")
             time.sleep(3)

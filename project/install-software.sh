@@ -64,23 +64,23 @@ do
  1)
   /usr/bin/python ./script/install-configparser.py ./software/configparser-py2.6.tar ;;
  2)
-  /usr/bin/python ./script/linux-install-nginx.py ;;
+  /usr/bin/python ./script/linux-install-nginx.py | tee ./logs/linux-install-nginx.log;;
  3)
-  /usr/bin/python ./script/linux-install-tomcat.py ;;
+  /usr/bin/python ./script/linux-install-tomcat.py | tee ./logs/linux-install-tomcat.log;;
  4)
-  /usr/bin/python ./script/linux-install-db2.py ;;
+  /usr/bin/python ./script/linux-install-db2.py | tee ./logs/linux-install-db2.log;;
  5)
-  /usr/bin/python ./script/linux-install-mariadb.py ;;
+  /usr/bin/python ./script/linux-install-mariadb.py | tee ./logs/linux-install-mariadb.log;;
  6)
-  sh ./script/linux-install-git.sh ;;
+  sh ./script/linux-install-git.sh | tee ./logs/linux-install-git.log;;
  7)
-  /usr/bin/python ./script/linux-install-docker.py ;;
+  /usr/bin/python ./script/linux-install-docker.py | tee ./logs/linux-install-docker.log;;
  8)
-  /usr/bin/python ./script/linux-install-keepalived.py ;;
+  /usr/bin/python ./script/linux-install-keepalived.py | tee ./logs/linux-install-keepalived.log;;
  9)
-  sh ./script/linux-security-sudo.sh ;;
+  sh ./script/linux-security-sudo.sh | tee ./logs/security-sudo.log;;
  10)
-  /usr/bin/python ./script/linux-install-mongodb.py ;;
+  /usr/bin/python ./script/linux-install-mongodb.py | tee ./logs/linux-install-mongodb.log;;
  11)
   projectWhile ;;
  *)
